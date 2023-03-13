@@ -45,6 +45,11 @@
 	yes
 */
 
+void 균형잡힌세상()
+{
+
+}
+
 
 /*
 	https://www.acmicpc.net/problem/1874
@@ -99,7 +104,10 @@
 	예제 출력 2
 	NO
 */
-void 
+void 스택수열()
+{
+
+}
 /*
 	https://www.acmicpc.net/problem/1021
 

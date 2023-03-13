@@ -38,9 +38,67 @@
 	1 3
 */
 
+#include <iostream>
+
+using namespace std;
+
+
+void Move(int num, int from, int temp, int dest)
+{
+	if (num == 0) return;
+
+	if (num == 1)
+	{
+		cout << from << " " << dest << "\n";
+		
+		return;
+	}
+
+	Move(num - 1, from, dest, temp);
+	Move(1, from, temp, dest);
+	Move(num - 1, temp, from, dest);
+	//Move 1
+	
+	//1 3
+
+	//Move 2
+
+	//1 2
+	// 
+	//1 3
+	// 
+	//2 3
+
+	//Move 3
+
+	//1 3
+	//1 2
+	//3 2
+	// 
+	//1 3
+	//
+	//2 1
+	//2 3
+	//1 3
+}
+
+int Count(int num)
+{
+	if (num == 0) return 0;
+	if (num == 1) return 1;
+
+	return 2 * Count(num - 1) + 1;
+}
+
 void 하노이탑이동순서()
 {
+	int N;//(1~10)
 
+	cin >> N;
+
+	cout << Count(N) << "\n";
+
+	Move(N, 1, 2, 3);
 }
 
 /*
@@ -72,9 +130,36 @@ void 하노이탑이동순서()
 	0 4
 */
 
+#include <map>
+#include <set>
+
 void 좌표정렬하기2()
 {
+	map<int, set<int>> points;
 
+	int pointsNum;
+
+	cin >> pointsNum;
+
+	int x = 0, y = 0;
+	for (int i = 0; i < pointsNum; i++)
+	{
+		cin >> x >> y;
+
+		points[y].insert(x);
+	}
+
+	for (auto point : points)
+	{
+		y = point.first;
+
+		for (auto row : point.second)
+		{
+			x = row;
+
+			cout << x << " " << y << "\n";
+		}
+	}
 }
 
 /*
@@ -109,7 +194,47 @@ void 좌표정렬하기2()
 	36
 */
 
+#include <vector>
+#include <algorithm>
+
 void 나무자르기()
 {
+	long long N, M;//나무의 수(1 ~ 1000000)백만, 가져가려는 나무의 길이(2000000000)20억
+	vector<long long> heights;//(1~1000000000)10억
+
+	cin >> N >> M;
+
+	heights.resize(N);
+
+	//큰 순서대로 정렬
+	for (long long i = 0; i < N; i++)
+		cin >> heights[i];
+	sort(heights.begin(), heights.end(),greater<long long>());
+
+
+	//다음 나무와의 키 차이
+	vector<long long> diffs(heights.size());
+	for (long long i = 0; i < heights.size() - 1; i++)
+		diffs[i] = heights[i] - heights[i + 1];
+
+	diffs.back() = heights.back();
+
+	long long total = 0;
+	long long height = heights[0];//자를 높이 초깃값 = 제일 큰나무
+
+	for (long long i = 0; i < diffs.size(); i++)
+	{
+		total += (i + 1) * diffs[i];
+		height -= diffs[i];
+		if (total >= M)
+		{
+			long long diff = (total - M) / (i + 1);
+			height += diff;
+
+			cout << height;
+			break;
+		}
+	}
+
 
 }
