@@ -12,6 +12,10 @@ void 셀프넘버();
 void 단어공부();
 void 크로아티아알파벳();
 
+void 달팽이는올라가고싶다();
+void ACM호텔();
+void 소수구하기();
+
 #include <iostream>
 #include "Timer\timer.h"
 
@@ -21,13 +25,13 @@ int main()
 {
 	ajwCommon::Time::Create();
 
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
+	//ios::sync_with_stdio(false);
+	//cin.tie(NULL);
 	while (true)
 	{
 		system("cls");
 
-		ajwCommon::Time::Get()->StartCheckTime("Algo");
+		ajwCommon::Time::Get()->StartCheckTime("Algo");//입력시간을 생각 못함;
 
 		///1일차
 		//사칙연산();
@@ -37,9 +41,14 @@ int main()
 
 		///2일차
 		//평균은넘겠지();
-		셀프넘버();
+		//셀프넘버();
 		//단어공부();
 		//크로아티아알파벳();
+
+		//3일차
+		//달팽이는올라가고싶다();
+		//ACM호텔();
+		소수구하기();
 
 		cout << "\n\n";
 

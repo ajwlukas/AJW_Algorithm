@@ -27,6 +27,9 @@
     <ClCompile Include="문제\230310.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="문제\230313.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
