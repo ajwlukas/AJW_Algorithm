@@ -153,9 +153,12 @@
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="문제\230309.cpp" />
-    <ClCompile Include="문제\230310.cpp" />
-    <ClCompile Include="문제\230313.cpp" />
+    <ClCompile Include="문제\Day1.cpp" />
+    <ClCompile Include="문제\Day2.cpp" />
+    <ClCompile Include="문제\Day3.cpp" />
+    <ClCompile Include="문제\Day4.cpp" />
+    <ClCompile Include="문제\Day5.cpp" />
+    <ClCompile Include="문제\Day6.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

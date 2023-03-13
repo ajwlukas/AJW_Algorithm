@@ -21,13 +21,22 @@
     <ClCompile Include="pch.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="문제\230309.cpp">
+    <ClCompile Include="문제\Day1.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="문제\230310.cpp">
+    <ClCompile Include="문제\Day2.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="문제\230313.cpp">
+    <ClCompile Include="문제\Day3.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="문제\Day4.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="문제\Day5.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="문제\Day6.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

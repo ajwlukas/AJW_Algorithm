@@ -204,9 +204,9 @@ void 소수구하기()
 	int count = 0;
 	for (auto num : possibleNums)
 	{
-		count++;
-		//cout << num << "\n";
+		//count++;
+		cout << num << "\n";
 	}
 
-	cout << count;
+	//cout << count;
 }
