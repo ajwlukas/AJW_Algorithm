@@ -45,8 +45,74 @@
 	yes
 */
 
+#include <vector>
+#include <string>
+#include <sstream>
+#include <stack>
+#include <assert.h>
+
+using namespace std;
+
+bool CheckBalanced(const string& input)
+{
+	stack<char> stck;
+
+	for (const char a : input)
+	{
+		switch (a)
+		{
+		case '(':
+			stck.push('(');
+			break;
+		case '[':
+			stck.push('[');
+			break;
+		case ')':
+		{
+			if (stck.empty()) return false;
+
+			if (stck.top() == '(')
+				stck.pop();
+			else
+				return false;
+		}
+			break;
+		case ']' :
+		{
+			if (stck.empty()) return false;
+
+			if (stck.top() == '[')
+				stck.pop();
+			else
+				return false;
+		}
+			break;
+		default:
+			//assert(false);
+			break;
+		}
+	}
+
+	if (!stck.empty()) return false;
+
+	return true;
+}
+
 void 균형잡힌세상()
 {
+	vector<string> rets;
+
+	string buffer = {};
+	while (getline(cin, buffer), buffer != ".")
+	{
+		if (CheckBalanced(buffer))
+			rets.push_back("yes");
+		else
+			rets.push_back("no");
+	}
+
+	for (auto ret : rets)
+		cout << ret << "\n";
 
 }
 
@@ -106,6 +172,60 @@ void 균형잡힌세상()
 */
 void 스택수열()
 {
+	int n;//(1~100000)
+	//물론 같은 정수가 두 번 나오는 일은 없다.
+
+	cin >> n;
+
+	stack<int> origin;
+	vector<int> answer(n);
+	vector<char> ret;
+
+	stack<int> stck;
+
+	for (int i = 0; i < n; i++)
+	{
+		cin >> answer[i];
+	}
+
+	for (int i = n; i >= 1; i--)
+	{
+		origin.push(i);
+	}
+
+	int count = 0;
+
+	while (true)
+	{
+		if (!stck.empty() && stck.top() == answer[count])
+		{
+			ret.push_back('-');
+
+			stck.pop();
+			count++;
+
+			if (count == n)
+			{
+
+				for (auto r : ret)
+				{
+					cout << r << "\n";
+				}
+				break;
+			}
+		}
+		else
+		{
+			if (origin.empty())
+			{
+				cout << "NO";
+				break;
+			}
+			stck.push(origin.top());
+			ret.push_back('+');
+			origin.pop();
+		}
+	}
 
 }
 /*
@@ -151,7 +271,144 @@ void 스택수열()
 	14
 */
 
+class Node
+{
+public:
+	Node(int data) : data(data) {}
+
+	int data;
+
+	Node* next;
+	Node* before;
+};
+
+class CircleQueue
+{
+public:
+
+	int OptimizedRotate(int find)
+	{
+		Node* temp = current;
+
+		int countR = 0;
+
+		while (temp->data != find)
+		{
+			temp = temp->next;
+			countR++;
+		}
+
+		int countL = 0;
+
+		temp = current;
+
+		while (temp->data != find)
+		{
+			temp = temp->before;
+			countL++;
+		}
+
+		if (countR <= countL)
+		{
+			for (int i = 0; i < countR; i++)
+				RoatateR();
+		}
+		else
+		{
+			for (int i = 0; i < countL; i++)
+				RoatateL();
+		}
+
+		return min(countL, countR);
+	}
+
+
+	void RoatateR()
+	{
+		tail = current;
+		current = current->next;
+	}
+
+	void RoatateL()
+	{
+		current = tail;
+		tail = tail->before;
+	}
+
+	void Push(Node* node)
+	{
+		if (!current)
+		{
+			current = node;
+			tail = node;
+		}
+
+
+		node->before = tail;
+		node->next = current;
+
+		current->before = node;
+		tail->next = node;
+		tail = node;
+	}
+
+	void Pop()
+	{
+		Node* temp = current;
+		//Node* next = current->next;
+		Node* before = current->before;
+
+		current = current->next;
+
+		current->before = before;
+
+		before->next = current;
+
+		delete temp;
+	}
+
+	void Clear()
+	{
+		while (current)
+		{
+			Pop();
+		}
+	}
+
+	Node* current = nullptr;
+
+	//Node* head;
+	Node* tail = nullptr;
+};
+
 void 회전하는큐()
 {
+	int N;//sizeofQueue(1 ~ 50)
+	int M;//뽑아내려하는 갯수(M <+ N)
 
+	cin >> N >> M;
+
+	vector<int> locations(M);//(1 <= location <= N)
+
+	for (int i = 0; i < M; i++)
+	{
+		cin >> locations[i];
+	}
+
+	CircleQueue q;
+
+	for (int i = 0; i < N; i++)
+	{
+		q.Push(new Node(i + 1));
+	}
+
+	int ret = 0;
+
+	for (int i = 0; i < M; i++)
+	{
+		ret += q.OptimizedRotate(locations[i]);
+
+		q.Pop();
+	}
+	cout << ret;
 }
