@@ -33,9 +33,74 @@
 	4
 */
 
+#include <vector>
+#include <set>
+
+using namespace std;
+
+class Com
+{
+public:
+	Com(int serialNum) : serialNum(serialNum) {}
+
+	void Connect(Com* other)
+	{
+		connects.insert(other);
+		other->connects.insert(this);
+	}
+
+	void GetAllConnectees(set<int>& input)
+	{
+		if (input.find(serialNum) != input.end()) return;
+
+		input.insert(serialNum);
+
+		for (auto connect : connects)
+			connect->GetAllConnectees(input);
+	}
+
+	int serialNum;
+	set<Com*> connects;
+};
+
 void 바이러스()
 {
+	int comNum;//num of Computers( <= 100)
+	int pairNum;//num of Connections;
 
+	cin >> comNum >> pairNum;
+
+	vector<Com*> coms(comNum);
+
+	set<int> group;//connected with com1
+
+	for (int i = 0; i < comNum; i++)
+	{
+		coms[i] = new Com(i);
+	}
+
+	int A, B;
+	//connect
+	for (int i = 0; i < pairNum; i++)
+	{
+		cin >> A >> B;
+
+		int a = A - 1;
+		int b = B - 1;
+
+		coms[a]->Connect(coms[b]);
+	}
+
+	coms[0]->GetAllConnectees(group);
+
+	cout << group.size() - 1;
+
+
+
+	for (auto com : coms)
+	{
+		delete com;
+	}
 }
 
 /*
@@ -103,6 +168,113 @@ void 바이러스()
 
 void 토마토()
 {
+	int M, N;
+	cin >> M >> N;
+
+	int whole = M * N;
+
+	vector<vector<int>> tomatoes(N);//row
+
+	vector<pair<int, int>> ripens;
+
+	for (auto& t : tomatoes)
+		t.resize(M);
+
+	int ripenCount = 0;
+	int day = 0;
+
+	for (int row = 0; row < N; row++)
+	{
+		for (int col = 0; col < M; col++)
+		{
+			int t = 0;
+			cin >> t;
+
+			tomatoes[row][col] = t;
+
+			if (t == 1)
+			{
+				ripens.push_back(make_pair(row, col));
+				ripenCount++;
+			}
+			else if (t == -1)
+			{
+				whole--;
+			}
+		}
+	}
+
+	vector<pair<int, int>> newRipens = {};
+	while (true)
+	{
+		for (auto r : ripens)
+		{
+			int row = r.first;
+			int col = r.second;
+
+			int left = col - 1;
+			int right = col + 1;
+			int up = row - 1;
+			int down = row + 1;
+
+			if (left >= 0)
+			{
+				int& state = tomatoes[row][left];
+
+				if (state == 0)
+				{
+					state = 1;
+					newRipens.push_back(make_pair(row, left));
+					ripenCount++;
+				}
+			}
+			if (right <= M - 1)
+			{
+				int& state = tomatoes[row][right];
+
+				if (state == 0)
+				{
+					state = 1;
+					newRipens.push_back(make_pair(row, right));
+					ripenCount++;
+				}
+			}
+			if (up >= 0)
+			{
+				int& state = tomatoes[up][col];
+
+				if (state == 0)
+				{
+					state = 1;
+					newRipens.push_back(make_pair(up, col));
+					ripenCount++;
+				}
+			}
+			if (down <= N - 1)
+			{
+				int& state = tomatoes[down][col];
+
+				if (state == 0)
+				{
+					state = 1;
+					newRipens.push_back(make_pair(down, col));
+					ripenCount++;
+				}
+			}
+		}
+		if (newRipens.empty())
+		{
+			if (ripenCount < whole)
+				day = -1;
+			break;
+		}
+
+		day++;
+		ripens = newRipens;
+		newRipens.clear();
+	}
+
+	cout << day;
 
 }
 
@@ -162,8 +334,61 @@ void 토마토()
 	10946 17711
 */
 
+int fibonacci(vector<int>& fibonnaccis, int n)
+{
+	if (fibonnaccis[n] != -1) return fibonnaccis[n];
+
+	fibonnaccis[n] = fibonacci(fibonnaccis, n - 1) + fibonacci(fibonnaccis, n - 2);
+	return fibonnaccis[n];
+}
+
 void 피보나치함수()
 {
+	//호출횟수		0	1
+	//f(0)			1	0
+	//f(1)			0	1
+	//f(2)			1	1 == f(0) + f(1)
+	//f(3)			1	2 == f(1) + f(2)
+	//f(4)			2	3 == f(2) + f(3)
+	//f(5)			3	5 == f(4) + f(5)
+
+	//An = An-1 + An-2
+
+	int T;//num of testCases
+
+	cin >> T;
+
+	vector<int> cases(T);
+
+	int max = 1;
+	for (int i = 0; i < T; i++)
+	{
+		int temp;
+		cin >> temp;
+		cases[i] = temp;
+
+		max = max > temp ? max : temp;
+	}
+
+	vector<int> fibonnaccis(max + 1, -1);
+
+	fibonnaccis[0] = 0;
+	fibonnaccis[1] = 1;
+
+
+	fibonacci(fibonnaccis, max);
+
+	for (auto c : cases)
+	{
+		int zero = 0;
+		if (c >= 1)
+			zero = fibonnaccis[c - 1];
+		else
+			zero = 1;
+		int one = fibonnaccis[c];
+
+		cout << zero << " " << one << "\n";
+	}
 
 }
 
@@ -192,7 +417,57 @@ void 피보나치함수()
 	4
 */
 
+
+#include <map>
+
 void 가장긴증가하는부분수열()
 {
+	int N;//sizeof수열
+
+	cin >> N;
+
+	int temp;
+
+	vector<int> v;
+
+	cin >> temp;
+	N--;
+
+	v.push_back(temp);
+
+	while (N--)
+	{
+		cin >> temp;
+
+		if (temp > v.back())
+			v.push_back(temp);
+		else
+		{
+			for (int i = 0; i < v.size(); i++)
+			{
+				if (v[i] >= temp)
+				{
+					v[i] = temp;
+					break;
+				}
+			}
+		}
+	}
+
+	cout << v.size();
 
 }
+
+/*
+	10
+	900
+	10
+	50
+	20
+	1
+	2
+	3
+	90
+	5
+	6
+*/
