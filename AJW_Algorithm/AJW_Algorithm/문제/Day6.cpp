@@ -38,30 +38,45 @@
 
 using namespace std;
 
-class Com
+//class Com
+//{
+//public:
+//	Com(int serialNum) : serialNum(serialNum) {}
+//
+//	void Connect(Com* other)
+//	{
+//		connects.insert(other);
+//		other->connects.insert(this);
+//	}
+//
+//	void GetAllConnectees(set<int>& input)
+//	{
+//		if (input.find(serialNum) != input.end()) return;
+//
+//		input.insert(serialNum);
+//
+//		for (auto connect : connects)
+//			connect->GetAllConnectees(input);
+//	}
+//
+//	int serialNum;
+//	set<Com*> connects;
+//};
+
+void dfs(int index, int& count, vector<vector<int>>& connects, vector<bool>& check)
 {
-public:
-	Com(int serialNum) : serialNum(serialNum) {}
+	if (check[index]) return;
 
-	void Connect(Com* other)
+	count++;
+	check[index] = true;
+
+	for (int i = 0; i < connects[index].size(); i++)
 	{
-		connects.insert(other);
-		other->connects.insert(this);
+		int nextIndex = connects[index][i];
+		if (!check[nextIndex])//다음 방문할 곳이 처음이면
+			dfs(nextIndex, count, connects, check);
 	}
-
-	void GetAllConnectees(set<int>& input)
-	{
-		if (input.find(serialNum) != input.end()) return;
-
-		input.insert(serialNum);
-
-		for (auto connect : connects)
-			connect->GetAllConnectees(input);
-	}
-
-	int serialNum;
-	set<Com*> connects;
-};
+}
 
 void 바이러스()
 {
@@ -70,37 +85,59 @@ void 바이러스()
 
 	cin >> comNum >> pairNum;
 
-	vector<Com*> coms(comNum);
+	vector<vector<int>> connects(comNum);
 
-	set<int> group;//connected with com1
+	vector<bool> check(comNum, false);
 
-	for (int i = 0; i < comNum; i++)
+
+	while (pairNum--)
 	{
-		coms[i] = new Com(i);
+		int from, to;
+
+		cin >> from >> to;
+
+		from--;
+		to--;
+
+		connects[from].push_back(to);
+		connects[to].push_back(from);
 	}
 
-	int A, B;
-	//connect
-	for (int i = 0; i < pairNum; i++)
-	{
-		cin >> A >> B;
+	int count = 0;
 
-		int a = A - 1;
-		int b = B - 1;
+	dfs(0, count, connects, check);
 
-		coms[a]->Connect(coms[b]);
-	}
+	cout << count - 1;
 
-	coms[0]->GetAllConnectees(group);
+	//vector<Com*> coms(comNum);
 
-	cout << group.size() - 1;
+	//set<int> group;//connected with com1
 
+	//for (int i = 0; i < comNum; i++)
+	//{
+	//	coms[i] = new Com(i);
+	//}
 
+	//int A, B;
+	////connect
+	//for (int i = 0; i < pairNum; i++)
+	//{
+	//	cin >> A >> B;
 
-	for (auto com : coms)
-	{
-		delete com;
-	}
+	//	int a = A - 1;
+	//	int b = B - 1;
+
+	//	coms[a]->Connect(coms[b]);
+	//}
+
+	//coms[0]->GetAllConnectees(group);
+
+	//cout << group.size() - 1;
+
+	//for (auto com : coms)
+	//{
+	//	delete com;
+	//}
 }
 
 /*
@@ -166,23 +203,61 @@ void 바이러스()
 	0
 */
 
+#include <queue>
+
+int M, N;
+
+vector<vector<int>> tomatoes;//row
+queue<pair<int, int>> ripens;
+
+int whole = 0;
+
+int dx[4] = { -1, 0, 1, 0 };
+int dy[4] = { 0, -1, 0, 1 };
+
+int BFS()
+{
+	int ret = 0;
+	while (!ripens.empty())
+	{
+		int xO = ripens.front().second;
+		int yO = ripens.front().first;
+
+		ripens.pop();
+
+		for (int i = 0; i < 4; i++)
+		{
+			int nx = xO + dx[i];
+			int ny = yO + dy[i];
+
+			if (nx < 0 || nx > M - 1 || ny < 0 || ny > N - 1)continue;
+
+			if (tomatoes[ny][nx] == 0)
+			{
+				whole--;
+				ret = tomatoes[yO][xO];
+				tomatoes[ny][nx] = tomatoes[yO][xO] + 1;
+				ripens.push(make_pair(ny, nx));
+			}
+		}
+	}
+
+	return ret;
+}
+
 void 토마토()
 {
-	int M, N;
 	cin >> M >> N;
 
-	int whole = M * N;
+	whole = M * N;
 
-	vector<vector<int>> tomatoes(N);//row
-
-	vector<pair<int, int>> ripens;
-
+	tomatoes.resize(N);
 	for (auto& t : tomatoes)
 		t.resize(M);
 
-	int ripenCount = 0;
 	int day = 0;
 
+	//데이터 받기
 	for (int row = 0; row < N; row++)
 	{
 		for (int col = 0; col < M; col++)
@@ -194,87 +269,150 @@ void 토마토()
 
 			if (t == 1)
 			{
-				ripens.push_back(make_pair(row, col));
-				ripenCount++;
-			}
-			else if (t == -1)
-			{
+				ripens.push(make_pair(row, col));
 				whole--;
 			}
+			else if (t == -1)
+				whole--;
 		}
 	}
 
-	vector<pair<int, int>> newRipens = {};
-	while (true)
-	{
-		for (auto r : ripens)
-		{
-			int row = r.first;
-			int col = r.second;
+	day = BFS();
 
-			int left = col - 1;
-			int right = col + 1;
-			int up = row - 1;
-			int down = row + 1;
-
-			if (left >= 0)
-			{
-				int& state = tomatoes[row][left];
-
-				if (state == 0)
-				{
-					state = 1;
-					newRipens.push_back(make_pair(row, left));
-					ripenCount++;
-				}
-			}
-			if (right <= M - 1)
-			{
-				int& state = tomatoes[row][right];
-
-				if (state == 0)
-				{
-					state = 1;
-					newRipens.push_back(make_pair(row, right));
-					ripenCount++;
-				}
-			}
-			if (up >= 0)
-			{
-				int& state = tomatoes[up][col];
-
-				if (state == 0)
-				{
-					state = 1;
-					newRipens.push_back(make_pair(up, col));
-					ripenCount++;
-				}
-			}
-			if (down <= N - 1)
-			{
-				int& state = tomatoes[down][col];
-
-				if (state == 0)
-				{
-					state = 1;
-					newRipens.push_back(make_pair(down, col));
-					ripenCount++;
-				}
-			}
-		}
-		if (newRipens.empty())
-		{
-			if (ripenCount < whole)
-				day = -1;
-			break;
-		}
-
-		day++;
-		ripens = newRipens;
-		newRipens.clear();
-	}
+	day = whole > 0 ? -1 : day;
 
 	cout << day;
+
+	// int M, N;
+	//cin >> M >> N;
+
+	//int whole = M * N;
+
+	//vector<vector<int>> tomatoes(N);//row
+
+	//vector<pair<int, int>> ripens;
+
+	//for (auto& t : tomatoes)
+	//	t.resize(M);
+
+	//int ripenCount = 0;
+	//int day = 0;
+
+	//for (int row = 0; row < N; row++)
+	//{
+	//	for (int col = 0; col < M; col++)
+	//	{
+	//		int t = 0;
+	//		cin >> t;
+
+	//		tomatoes[row][col] = t;
+
+	//		if (t == 1)
+	//		{
+	//			ripens.push_back(make_pair(row, col));
+	//			ripenCount++;
+	//		}
+	//		else if (t == -1)
+	//		{
+	//			whole--;
+	//		}
+	//	}
+	//}
+
+	//vector<pair<int, int>> newRipens = {};
+
+
+	//int dx[4] = { -1, 0, 1, 0 };
+	//int dy[4] = { 0, -1, 0, 1 };
+
+	//while (true)
+	//{
+	//	for (auto r : ripens)
+	//	{
+	//		int row = r.first;
+	//		int col = r.second;
+
+	//		for (int i = 0; i < 4; i++)
+	//		{
+	//			int nx = col + dx[i];
+	//			int ny = row + dy[i];
+
+	//			if (nx < 0 || nx > M - 1 || ny < 0 || ny > N - 1)
+	//				continue;
+
+	//			int& state = tomatoes[ny][nx];
+
+	//			if (state == 0)
+	//			{
+	//				state = 1;
+	//				newRipens.push_back(make_pair(ny, nx));
+	//				ripenCount++;
+	//			}
+	//		}
+
+	//	/*	int left = col - 1;
+	//		int right = col + 1;
+	//		int up = row - 1;
+	//		int down = row + 1;
+
+	//		if (left >= 0)
+	//		{
+	//			int& state = tomatoes[row][left];
+
+	//			if (state == 0)
+	//			{
+	//				state = 1;
+	//				newRipens.push_back(make_pair(row, left));
+	//				ripenCount++;
+	//			}
+	//		}
+	//		if (right <= M - 1)
+	//		{
+	//			int& state = tomatoes[row][right];
+
+	//			if (state == 0)
+	//			{
+	//				state = 1;
+	//				newRipens.push_back(make_pair(row, right));
+	//				ripenCount++;
+	//			}
+	//		}
+	//		if (up >= 0)
+	//		{
+	//			int& state = tomatoes[up][col];
+
+	//			if (state == 0)
+	//			{
+	//				state = 1;
+	//				newRipens.push_back(make_pair(up, col));
+	//				ripenCount++;
+	//			}
+	//		}
+	//		if (down <= N - 1)
+	//		{
+	//			int& state = tomatoes[down][col];
+
+	//			if (state == 0)
+	//			{
+	//				state = 1;
+	//				newRipens.push_back(make_pair(down, col));
+	//				ripenCount++;
+	//			}
+	//		}*/
+	//	}
+	//	if (newRipens.empty())
+	//	{
+	//		if (ripenCount < whole)
+	//			day = -1;
+	//		break;
+	//	}
+
+	//	day++;
+	//	ripens = newRipens;
+	//	newRipens.clear();
+	//}
+
+	//cout << day;
 
 }
 
@@ -418,7 +556,6 @@ void 피보나치함수()
 */
 
 
-#include <map>
 
 void 가장긴증가하는부분수열()
 {
@@ -455,7 +592,62 @@ void 가장긴증가하는부분수열()
 	}
 
 	cout << v.size();
+}
 
+
+void 가장긴증가하는부분수열심화()
+{
+	int N;//sizeof수열
+
+	cin >> N;
+
+	int temp;
+
+	vector<vector<int>> vs(N);
+
+
+	for (int i = 0; i < N; i++)
+	{
+		cin >> temp;
+
+		vs[i].push_back(temp);
+	}
+
+	for (int i = 1; i < vs.size(); i++)
+	{
+		vector<int>& now = vs[i];
+
+		for (int j = 0; j < i; j++)
+		{
+			vector<int>& other = vs[j];
+
+			if (vs[j].back() >= now.back()) continue;
+
+			if (vs.size() > now.size() - 1)
+			{
+				int temp = now.back();
+				now = other;
+				now.push_back(temp);
+			}
+		}
+	}
+
+	vector<int>* ans = nullptr;
+
+	int max = 0;
+	for (auto& v : vs)
+	{
+		if (max < v.size())
+		{
+			max = v.size();
+			ans = &v;
+		}
+	}
+
+	for (int i : *ans)
+	{
+		cout << i << "\t";
+	}
 }
 
 /*

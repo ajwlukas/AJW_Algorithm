@@ -32,6 +32,7 @@ void 바이러스();
 void 토마토();
 void 피보나치함수();
 void 가장긴증가하는부분수열();
+void 가장긴증가하는부분수열심화();
 
 #include <iostream>
 #include "Timer\timer.h"
@@ -82,6 +83,7 @@ int main()
 		//토마토();
 		//피보나치함수();
 		가장긴증가하는부분수열();
+		//가장긴증가하는부분수열심화();
 
 		cout << "\n\n";
 
