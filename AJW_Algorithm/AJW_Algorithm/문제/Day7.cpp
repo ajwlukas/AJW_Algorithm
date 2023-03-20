@@ -50,6 +50,49 @@
 	1
 
 */
+void 그룹단어체커() 
+{
+	int N;//numofwords (1 ~ 100)
+
+	cin >> N;
+
+	string temp;
+
+	getline(cin, temp);//개행문자가 남아있단다.
+
+	vector<string> inputs(N);
+
+	for (int i = 0; i < N; i++)
+		getline(cin, inputs[i]);
+
+	int ret = N;//num of group word
+
+	for (int i = 0; i < N; i++)
+	{
+		set<char> checker;
+
+		char before = '0';
+
+		for(char a : inputs[i])
+		{
+			//if its first time
+			if (checker.find(a) == checker.end())
+				checker.insert(a);
+			else
+			{
+				if (a != before)
+				{
+					ret--;
+					break;
+				}
+			}
+
+			before = a;
+		}
+	}
+
+	cout << ret;
+}
 
 /*
 	https://www.acmicpc.net/problem/2839
@@ -89,6 +132,43 @@
 	3
 */
 
+void 설탕배달() 
+{
+	int N;//weight (3~5000)
+
+	cin >> N;
+
+	int ret = 0;
+
+	int remain = 0;
+
+	int five = 0;
+
+	int count = 0;
+
+	bool flag = false;
+
+	while (N >= 0)
+	{
+		if (N % 3 == 0)
+		{
+			five = count;
+			remain = N;
+
+			flag = true;
+		}
+
+
+		count++;
+		N -= 5;
+
+	}
+
+	ret = flag ? five + remain / 3 : -1;
+
+	cout << ret;
+}
+
 /*
 	https://www.acmicpc.net/problem/1011
 
@@ -118,9 +198,71 @@
 	3
 	3
 	4
+
+	시작 : 1 : 34
+	끝 : 1 : 57
+
+	소요시간 : 23분
 */
 
+void FlymetotheAlphaCentauri() 
+{
+	int T;//num of test cases
 
+	cin >> T;
+
+	vector<pair<unsigned int, unsigned int>> xy(T);//(0 <= x < y < 2^31)
+
+	int x = 0;
+
+	int y = 0;
+
+	for (int i = 0; i < T; i++)
+	{
+		cin >> x >> y;
+		xy[i] = make_pair(x, y);
+	}
+
+	vector<int> ret(T);
+
+	for (int i = 0; i < T; i++)
+	{
+		auto p = xy[i];
+
+		int remain = p.second - p.first;//remain distance
+
+		int k = 1;
+
+		int days = 0;//days to go
+
+		while (remain > 0)
+		{
+			if (remain < k)
+			{
+				remain = 0;
+				days++;
+				break;
+			}
+			else if (remain >= k * 2)
+			{
+				remain -= k * 2;
+				days += 2;
+			}
+			else//k <= remain < k * 2
+			{
+				remain -= k;
+				days++;
+			}
+
+			k++;
+		}
+
+		ret[i] = days;
+	}
+
+	for (auto r : ret)
+		cout << r << "\n";
+}
 
 /*
 	https://www.acmicpc.net/problem/4948
@@ -161,9 +303,61 @@
 135
 1033
 8392
+
 */
 
 
+void 베르트랑공준() 
+{
+	int t = -1;
+
+	vector<int> ns;//(1~123456)
+
+	int max = 0;
+	while (cin >> t ,t)
+	{
+		ns.push_back(t);
+
+		max = max > t ? max : t;
+	}
+
+	max *= 2;
+
+	int size = ns.size();
+
+	vector<int> ret(size,0);
+
+	set<int> primenumbers;
+
+	for (int i = 2; i < max; i++)
+		primenumbers.insert(i);
+
+	for (int i = 2; i < sqrt(max); i++)
+	{
+		if (primenumbers.find(i) == primenumbers.end()) continue;
+
+		int mul = i;
+
+		while (mul * i <= max)
+		{
+			primenumbers.erase(mul * i);
+			mul++;
+		}
+	}
+
+	for (auto num : primenumbers)
+	{
+		for (int i = 0; i < size; i++)
+		{
+			if (ns[i] < num && 2 * ns[i] >= num)
+				ret[i]++;
+		}
+	}
+
+	for (auto i : ret)
+		cout << i << "\n";
+
+}
 
 /*
 	https://www.acmicpc.net/problem/1436
@@ -201,9 +395,181 @@
 500
 예제 출력 5
 166699
+
+
+시작 2 : 10
+
+끝 3 : 30
 */
 
 
+void StringPlusPlus(string& str)
+{
+	bool carry = true;
+
+	for (int i = str.length() - 1; i >= 0; i--)
+	{
+		if (carry)
+		{
+			str[i]++;
+			carry = false;
+		}
+
+		if (str[i] == '9' + 1)
+		{
+			str[i] = '0';
+			carry = true;
+		}
+	}
+
+	if (carry)
+		str = "1" + str;
+
+}
+
+void 영화감독숌() 
+{
+
+	int N;//(1 ~ 10000)
+
+	cin >> N;
+
+	/*
+		666
+		1666
+		2666
+		3666
+		4666
+		5666		6
+
+		6660
+		6661
+		6662
+		6663
+		6664
+		6665
+		6666
+		6667
+		6668
+		6669		10
+
+		7666
+		8666
+		9666
+		10666
+		11666
+		12666
+		13666
+		14666
+		15666		9
+
+		16660
+		16661
+		16662
+		16663
+		16664
+		16665
+		16666
+		16667
+		16668
+		16669		10
+
+		17666
+		18666
+		19666
+		20666
+		21666
+		22666
+		23666
+		24666
+		25666		9
+
+		26660
+		26661
+		26662
+		26663
+		26664
+		26665
+		26666
+		26667
+		26668
+		26669		10
+
+		...
+
+		65666
+
+		66600
+		...
+		66699		100
+
+		67666
+		...
+		75666		9
+
+		76660
+		...
+		76669		10
+
+		77666
+		...
+
+	*/
+
+	string sss = "666";
+
+	string headstring = "0";
+	string tailstring = "0";
+
+
+	int numOfTail = 0;
+
+	int tail = 0;
+	int sixInRow = 0;
+
+	N--;
+	while (N > 0)
+	{
+		StringPlusPlus(headstring);
+
+
+		sixInRow = 0;//series of 6s from behind
+		for (int i = headstring.length() - 1; i >= 0; i--)
+		{
+			if (headstring[i] - '0' == 6)
+			{
+				sixInRow++;
+			}
+			else
+				break;
+		}
+
+		numOfTail = pow(10, sixInRow);
+
+		tail = -1;
+		while (numOfTail--)
+		{
+			tail++;
+			N--;
+
+			if (N <= 0)
+				break;
+		}
+
+	}
+
+	string t(sixInRow, '0');
+
+	while (tail--)
+		StringPlusPlus(t);
+
+	headstring = headstring.substr(0, headstring.length() - sixInRow);
+
+	string ret = headstring + "666" + t;
+
+
+	cout << stoi(ret);
+}
 
 /*
 	https://www.acmicpc.net/problem/9184
@@ -251,6 +617,7 @@ w(50, 50, 50) = 1048576
 w(-1, 7, 18) = 1
 */
 
+void 신나는함수실행() {}
 
 
 /*
@@ -278,6 +645,7 @@ N이 주어졌을 때, P(N)을 구하는 프로그램을 작성하시오.
 16
 */
 
+void 파도반수열() {}
 
 
 /*
@@ -342,7 +710,7 @@ i(2 ≤ i ≤ N-1)번 집의 색은 i-1번, i+1번 집의 색과 같지 않아야 한다.
 253
 */
 
-
+void RGB거리() {}
 
 /*
 
@@ -377,7 +745,7 @@ i(2 ≤ i ≤ N-1)번 집의 색은 i-1번, i+1번 집의 색과 같지 않아야 한다.
 
 */
 
-
+void 정수삼각형() {}
 
 /*
 	https://www.acmicpc.net/problem/11047
@@ -425,7 +793,7 @@ i(2 ≤ i ≤ N-1)번 집의 색은 i-1번, i+1번 집의 색과 같지 않아야 한다.
 12
 */
 
-
+void 동전0() {}
 
 /*
 	https://www.acmicpc.net/problem/11399
@@ -452,7 +820,7 @@ i(2 ≤ i ≤ N-1)번 집의 색은 i-1번, i+1번 집의 색과 같지 않아야 한다.
 32
 */
 
-
+void ATM() {}
 
 /*
 	https://www.acmicpc.net/problem/1037
@@ -488,7 +856,7 @@ i(2 ≤ i ≤ N-1)번 집의 색은 i-1번, i+1번 집의 색과 같지 않아야 한다.
 185192
 */
 
-
+void 약수() {}
 
 /*
 	https://www.acmicpc.net/problem/2609
@@ -508,7 +876,7 @@ i(2 ≤ i ≤ N-1)번 집의 색은 i-1번, i+1번 집의 색과 같지 않아야 한다.
 72
 */
 
-
+void 최대공약수와최소공배수() {}
 
 /*
 	https://www.acmicpc.net/problem/1934
@@ -535,7 +903,7 @@ i(2 ≤ i ≤ N-1)번 집의 색은 i-1번, i+1번 집의 색과 같지 않아야 한다.
 221
 */
 
-
+void 최소공배수() {}
 
 /*
 	https://www.acmicpc.net/problem/11050
@@ -564,7 +932,7 @@ i(2 ≤ i ≤ N-1)번 집의 색은 i-1번, i+1번 집의 색과 같지 않아야 한다.
 10
 */
 
-
+void 이항계수1() {}
 
 /*
 	https://www.acmicpc.net/problem/1010
@@ -593,7 +961,7 @@ i(2 ≤ i ≤ N-1)번 집의 색은 i-1번, i+1번 집의 색과 같지 않아야 한다.
 67863915
 */
 
-
+void 다리놓기() {}
 
 /*
 	https://www.acmicpc.net/problem/10828
@@ -660,7 +1028,7 @@ pop
 -1
 */
 
-
+void 스택() {}
 
 /*
 	https://www.acmicpc.net/problem/10773
@@ -708,7 +1076,7 @@ pop
 7
 */
 
-
+void 제로() {}
 
 /*
 	https://www.acmicpc.net/problem/9012
@@ -750,7 +1118,7 @@ NO
 NO
 */
 
-
+void 괄호() {}
 
 /*
 	https://www.acmicpc.net/problem/18258
@@ -803,7 +1171,7 @@ front
 3
 */
 
-
+void 큐2() {}
 
 /*
 
@@ -846,7 +1214,7 @@ front
 
 */
 
-
+void DFS와BFS() {}
 
 /*
 	https://www.acmicpc.net/problem/2108
@@ -917,7 +1285,7 @@ N개의 수가 주어졌을 때, 네 가지 기본 통계값을 구하는 프로그램을 작성하시오.
 1
 */
 
-
+void 통계학() {}
 
 /*
 	https://www.acmicpc.net/problem/2630
@@ -957,7 +1325,7 @@ N개의 수가 주어졌을 때, 네 가지 기본 통계값을 구하는 프로그램을 작성하시오.
 7
 */
 
-
+void 색종이만들기() {}
 
 /*
 	https://www.acmicpc.net/problem/15650
@@ -995,7 +1363,7 @@ N개의 수가 주어졌을 때, 네 가지 기본 통계값을 구하는 프로그램을 작성하시오.
 1 2 3 4
 */
 
-
+void N과M2() {}
 
 /*
 	https://www.acmicpc.net/problem/9663
@@ -1016,7 +1384,7 @@ N이 주어졌을 때, 퀸을 놓는 방법의 수를 구하는 프로그램을 작성하시오.
 92
 */
 
-
+void NQueen() {}
 
 /*
 	https://www.acmicpc.net/problem/2579
@@ -1062,7 +1430,7 @@ N이 주어졌을 때, 퀸을 놓는 방법의 수를 구하는 프로그램을 작성하시오.
 75
 */
 
-
+void 계단오르기() {}
 
 /*
 	https://www.acmicpc.net/problem/1002
@@ -1094,7 +1462,7 @@ N이 주어졌을 때, 퀸을 놓는 방법의 수를 구하는 프로그램을 작성하시오.
 0
 */
 
-
+void 터렛() {}
 
 /*
 	https://www.acmicpc.net/problem/2798
@@ -1129,7 +1497,7 @@ N장의 카드에 써져 있는 숫자가 주어졌을 때, M을 넘지 않으면서 M에 최대한 가까운 �
 497
 */
 
-
+void 블랙잭() {}
 
 /*
 	https://www.acmicpc.net/problem/2231
@@ -1150,7 +1518,7 @@ N장의 카드에 써져 있는 숫자가 주어졌을 때, M을 넘지 않으면서 M에 최대한 가까운 �
 198
 */
 
-
+void 분해합() {}
 
 /*
 	https://www.acmicpc.net/problem/1541
@@ -1182,7 +1550,7 @@ N장의 카드에 써져 있는 숫자가 주어졌을 때, M을 넘지 않으면서 M에 최대한 가까운 �
 0
 */
 
-
+void 잃어버린괄호() {}
 
 /*
 	https://www.acmicpc.net/problem/11866
@@ -1205,7 +1573,7 @@ N과 K가 주어지면 (N, K)-요세푸스 순열을 구하는 프로그램을 작성하시오.
 <3, 6, 2, 7, 5, 1, 4>
 */
 
-
+void 요세푸스문제0() {}
 
 /*
 	https://www.acmicpc.net/problem/1992
@@ -1238,7 +1606,7 @@ N과 K가 주어지면 (N, K)-요세푸스 순열을 구하는 프로그램을 작성하시오.
 ((110(0101))(0010)1(0001))
 */
 
-
+void 쿼드트리() {}
 
 /*
 	https://www.acmicpc.net/problem/11054
@@ -1262,7 +1630,7 @@ N과 K가 주어지면 (N, K)-요세푸스 순열을 구하는 프로그램을 작성하시오.
 7
 */
 
-
+void 가장긴바이토닉부분수열() {}
 
 /*
 	https://www.acmicpc.net/problem/2667
@@ -1293,7 +1661,7 @@ N과 K가 주어지면 (N, K)-요세푸스 순열을 구하는 프로그램을 작성하시오.
 9
 */
 
-
+void 단지번호붙이기() {}
 
 /*
 	https://www.acmicpc.net/problem/1753
@@ -1323,3 +1691,4 @@ N과 K가 주어지면 (N, K)-요세푸스 순열을 구하는 프로그램을 작성하시오.
 INF
 */
 
+void 최단경로() {}
