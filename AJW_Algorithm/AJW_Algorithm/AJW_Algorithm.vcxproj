@@ -159,6 +159,7 @@
     <ClCompile Include="문제\Day4.cpp" />
     <ClCompile Include="문제\Day5.cpp" />
     <ClCompile Include="문제\Day6.cpp" />
+    <ClCompile Include="문제\Day7.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
