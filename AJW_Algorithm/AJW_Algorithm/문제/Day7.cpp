@@ -615,9 +615,116 @@ w(2, 2, 2) = 4
 w(10, 4, 6) = 523
 w(50, 50, 50) = 1048576
 w(-1, 7, 18) = 1
+
+시작 1037
+     11 30
 */
 
-void 신나는함수실행() {}
+//int coun = 0;
+
+map<string, int> m;
+
+int W(int a, int b, int c)
+{
+	string str = to_string(a) + "_" + to_string(b) + "_" + to_string(c);
+
+	if (m.find(str) != m.end())
+		return m[str];
+
+	bool condition0 = a <= 0 || b <= 0 || c <= 0;//a,b,c 중 하나라도 0이거나 음수인 정수라면
+	bool condition1 = a > 20 || b > 20 || c > 20;//a,b,c 중 하나라도 20 초과라면
+	bool condition2 = a < b && b < c;//a, b, c 순으로 증가 한다면
+
+	if (condition0)
+		return 1;
+	else if (condition1)
+	{
+		if (m.find("20_20_20") != m.end())
+			return m["20_20_20"];
+		else
+		{
+			m["20_20_20"] = W(20, 20, 20);
+			return m["20_20_20"];
+		}
+	}
+	else if (condition2)
+	{
+		int plus[3][3] = { {0, 0, -1}, {0, -1, -1}, {0, -1, 0} };
+		int ret[3] = {};
+
+		for (int i = 0; i < 3; i++)
+		{
+			int newA = a + plus[i][0];
+			int newB = b + plus[i][1];
+			int newC = c + plus[i][2];
+
+			string key = to_string(newA) + "_" + to_string(newB) + "_" + to_string(newC);
+
+			auto ans = m.find(key);
+			if (ans != m.end())
+				ret[i] = ans->second;
+			else
+			{
+				ret[i] = W(newA, newB, newC);
+				m[key] = ret[i];
+			}
+		}
+
+		return ret[0] + ret[1] - ret[2];
+	}
+
+	int plus[4][3] = { {-1, 0, 0}, {-1, -1, 0}, {-1, 0, -1}, {-1,-1,-1} };
+	int ret[4] = {};
+
+	for (int i = 0; i < 4; i++)
+	{
+		int newA = a + plus[i][0];
+		int newB = b + plus[i][1];
+		int newC = c + plus[i][2];
+
+
+		string key = to_string(newA) + "_" + to_string(newB) + "_" + to_string(newC);
+
+		auto ans = m.find(key);
+		if (ans != m.end())
+			ret[i] = ans->second;
+		else
+		{
+			ret[i] = W(newA, newB, newC);
+			m[key] = ret[i];
+		}
+
+	}
+
+	return ret[0] + ret[1] + ret[2] - ret[3];
+}
+
+void 신나는함수실행() 
+
+{
+	vector<vector<int>> abcs;
+	vector<int> rets;
+
+	int a = 0, b = 0, c = 0;//(-50 ~ 50)
+
+	while (true)
+	{
+		cin >> a >> b >> c;
+
+		if (a == -1 && b == -1 && c == -1) break;
+
+		vector<int> abc = { a,b,c };
+		abcs.emplace_back(abc);
+
+		rets.push_back(W(a, b, c));
+	}
+
+	for (int i = 0; i < rets.size(); i++)
+	{
+		cout << "w(" << abcs[i][0] << ", " << abcs[i][1] << ", " << abcs[i][2] << ") = " << rets[i] << "\n";
+	}
+
+}
 
 
 /*
@@ -645,7 +752,46 @@ N이 주어졌을 때, P(N)을 구하는 프로그램을 작성하시오.
 16
 */
 
-void 파도반수열() {}
+
+long long Wave(int i, vector<long long>& p)
+{
+	if (p[i] == -1)
+	{
+		p[i] = Wave(i - 1, p) + Wave(i - 5, p);
+		return p[i];
+	}
+	else
+		return p[i];
+}
+
+void 파도반수열() 
+{
+	int T;//num of TestCases
+
+	cin >> T;
+
+	vector<int> N(T);//(1~100)
+
+	int max = 0;
+
+	for (int i = 0; i < T; i++)
+	{
+		cin >> N[i];
+
+		max = max > N[i] ? max : N[i];
+	}
+
+	vector<long long> p = { 1,1,1,2,2 };
+
+	p.resize(max, -1);
+
+	Wave(max - 1, p);
+
+	for (int i : N)
+	{
+		cout << p[i - 1] << "\n";
+	}
+}
 
 
 /*
@@ -708,9 +854,54 @@ i(2 ≤ i ≤ N-1)번 집의 색은 i-1번, i+1번 집의 색과 같지 않아야 한다.
 60 66 19
 예제 출력 5
 253
+
+시작 2 22
+끝 2 40
 */
 
-void RGB거리() {}
+void RGB거리() 
+{
+	int N;//num of houses(2 ~ 1000)
+	
+	cin >> N;
+
+	vector<vector<int>> costs(N);//(1~1000)
+
+	vector<vector<int>> minimumCosts(N);
+
+	for (auto& v : minimumCosts)
+		v.resize(3);
+
+	for (int i = 0; i < N; i++)
+	{
+		vector<int> cost(3);
+
+		cin >> cost[0] >> cost[1] >> cost[2];
+
+		costs[i] = cost;
+	}
+
+	for (int i = 0; i < N; i++)
+	{
+		if (i == 0)
+			minimumCosts[0] = costs[0];
+		else
+		{
+			minimumCosts[i][0] = min(minimumCosts[i- 1][1], minimumCosts[i-1][2]);
+			minimumCosts[i][0] += costs[i][0];
+			minimumCosts[i][1] = min(minimumCosts[i- 1][0], minimumCosts[i-1][2]);
+			minimumCosts[i][1] += costs[i][1];
+			minimumCosts[i][2] = min(minimumCosts[i- 1][0], minimumCosts[i-1][1]);
+			minimumCosts[i][2] += costs[i][2];
+
+		}
+	}
+	vector<int> last = minimumCosts.back();
+
+	int ret = min(last[0], min(last[1], last[2]));
+
+	cout << ret;
+}
 
 /*
 
@@ -743,9 +934,58 @@ void RGB거리() {}
 	예제 출력 1
 	30
 
+	시작 2 45
+	끝 2 58
 */
 
-void 정수삼각형() {}
+void 정수삼각형() 
+{
+	int n;//size of pyramid(1 ~ 500)
+
+	cin >> n;
+
+	vector<vector<int>> addUp(n);
+
+	for (int i = 0; i < n; i++)
+	{
+		vector<int>& floor = addUp[i];
+
+		floor.resize(i + 1, 0);
+
+		for (int& i : floor)
+			cin >> i;
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		if (i == 0)
+			continue;
+		vector<int>& upperFloor = addUp[i - 1];
+		vector<int>& addFloor = addUp[i];
+
+		int width = addFloor.size();
+
+
+		for (int j = 0; j < width; j++)
+		{
+			if (j == 0)
+				addFloor[0] += upperFloor[0];
+			else if (j == width - 1)
+				addFloor[j] += upperFloor[j - 1];
+			else
+				addFloor[j] += max(upperFloor[j], upperFloor[j - 1]);
+		}
+	}
+
+	int m = 0;
+
+	for (int i : addUp.back())
+	{
+		m = max(m, i);
+	}
+
+	cout << m;
+}
 
 /*
 	https://www.acmicpc.net/problem/11047
@@ -791,9 +1031,41 @@ void 정수삼각형() {}
 50000
 예제 출력 2
 12
+
+3 19
+3 26
 */
 
-void 동전0() {}
+
+void 동전0() 
+{
+	int N, K;//(N = 1 ~ 10, K = 1 ~ 100,000,000)(억)
+
+	cin >> N >> K;
+
+	vector<int> values(N);
+
+	while(N--)
+	{
+		cin >> values[N];
+	}
+
+	int count = 0;
+	int index = 0;
+
+	while (K > 0)
+	{
+		if (K >= values[index])
+		{
+			K -= values[index];
+			count++;
+		}
+		else
+			index++;
+	}
+
+	cout << count;
+}
 
 /*
 	https://www.acmicpc.net/problem/11399
@@ -818,9 +1090,33 @@ void 동전0() {}
 3 1 4 3 2
 예제 출력 1
 32
+
+3 28
+3 35
 */
 
-void ATM() {}
+#include <algorithm>
+
+void ATM() 
+{
+	int N;//(1~1000)
+
+	cin >> N;
+
+	vector<int> times(N);
+
+	while (N--)
+		cin >> times[N];
+
+	sort(times.begin(), times.end());
+
+	int ret = 0;
+
+	for (int i = 0; i < times.size(); i++)
+		ret += times[i] * (times.size() - i);
+
+	cout << ret;
+}
 
 /*
 	https://www.acmicpc.net/problem/1037
