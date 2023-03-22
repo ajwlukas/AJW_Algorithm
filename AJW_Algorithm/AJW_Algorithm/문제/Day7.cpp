@@ -1150,9 +1150,32 @@ void ATM()
 14 26456 2 28 13228 3307 7 23149 8 6614 46298 56 4 92596
 예제 출력 4 
 185192
+
+ 11 31
+ 11 36
 */
 
-void 약수() {}
+void 약수() 
+{
+	int N;//num of dividers
+
+	cin >> N;
+
+	int max = 0;
+	int min = INT_MAX;
+
+	while(N--)
+	{
+		int temp;
+
+		cin >> temp;
+
+		max = max > temp ? max : temp;
+		min = min < temp ? min : temp;
+	}
+
+	cout << max * min;
+}
 
 /*
 	https://www.acmicpc.net/problem/2609
@@ -1170,9 +1193,67 @@ void 약수() {}
 예제 출력 1
 6
 72
+
+11 37
+11 56
 */
 
-void 최대공약수와최소공배수() {}
+void 최대공약수와최소공배수() 
+{
+	int A, B;
+
+	map<int, int> primeNumbersA;
+	map<int, int> primeNumbersB;
+
+	cin >> A >> B;
+
+
+	for (int i = 2; i <= A; i++)
+	{
+		while (A % i == 0)
+		{
+			A /= i;
+			primeNumbersA[i]++;
+		}
+	}
+	
+	for (int i = 2; i <= B; i++)
+	{
+		while (B % i == 0)
+		{
+			B /= i;
+			primeNumbersB[i]++;
+		}
+	}
+
+	int commonDivider = 1;
+	int commonMultiplier = 1;
+
+	set<int> allNums;
+
+	for (auto n : primeNumbersA)
+		allNums.insert(n.first);
+
+	for (auto n : primeNumbersB)
+		allNums.insert(n.first);
+
+	for (auto n : allNums)
+	{
+		if (primeNumbersA.find(n) != primeNumbersA.end() &&
+			primeNumbersB.find(n) != primeNumbersB.end())
+		{
+			commonDivider *= pow(n, min(primeNumbersA[n], primeNumbersB[n]));
+			commonMultiplier *= pow(n, max(primeNumbersA[n], primeNumbersB[n]));
+		}
+		else
+		{
+			commonMultiplier *= pow(n ,max(primeNumbersA[n], primeNumbersB[n]));
+		}
+	}
+
+	cout << commonDivider << "\n" << commonMultiplier;
+
+}
 
 /*
 	https://www.acmicpc.net/problem/1934
@@ -1197,9 +1278,73 @@ void 최대공약수와최소공배수() {}
 45000
 30
 221
+
+1 15
+1 25
 */
 
-void 최소공배수() {}
+void 최소공배수() 
+{
+	int T;//(1~1000) num of testCases
+
+	cin >> T;
+
+
+	vector<int> rets(T);
+
+	for (int i = 0; i < T; i++)
+	{
+		int A, B;
+
+		cin >> A >> B;
+
+		set<int> s;//all numbers include least once
+
+		map<int, int> mA;
+		map<int, int> mB;
+
+		for (int i = 2; i <= A; i++)
+		{
+			while (A % i == 0)
+			{
+				A /= i;
+				mA[i]++;
+
+				s.insert(i);
+			}
+
+			if (A == 1) break;
+		}
+
+		for (int i = 2; i <= B; i++)
+		{
+			while (B % i == 0)
+			{
+				B /= i;
+				mB[i]++;
+
+				s.insert(i);
+			}
+
+			if (B == 1) break;
+		}
+
+		int ret = 1;
+
+		for (int n : s)
+		{
+			ret *= pow(n, max(mA[n], mB[n]));
+		}
+
+		rets[i] = ret;
+	}
+
+	for (int n : rets)
+	{
+		cout << n << "\n";
+	}
+
+}
 
 /*
 	https://www.acmicpc.net/problem/11050
@@ -1226,9 +1371,38 @@ void 최소공배수() {}
 5 2
 예제 출력 1
 10
+
+1 27
+1 34
 */
 
-void 이항계수1() {}
+long long Factorial(long long n)
+{
+	if (n == 1 || n == 0) return 1;
+
+	return n * Factorial(n - 1);
+}
+
+void 이항계수1() 
+{
+	int N, K;//N(1~10), K(0~N);
+
+	cin >> N >> K;
+
+	int ret = 1;
+
+	int div = Factorial(K);
+
+	while (K)
+	{
+		K--;
+		ret *= N--;
+	}
+
+	ret /= div;
+
+	cout << ret;
+}
 
 /*
 	https://www.acmicpc.net/problem/1010
@@ -1255,9 +1429,52 @@ void 이항계수1() {}
 1
 5
 67863915
+
+1 38
+2 00
+
 */
 
-void 다리놓기() {}
+void 다리놓기() 
+{
+	int T;//num of testCases
+
+	cin >> T;
+
+	vector<long long> rets;
+
+	while (T--)
+	{
+		int N, M;//(0 < N <= M < 30)
+
+		cin >> N >> M;
+		
+
+		//mCn
+
+		long long ret = 1;
+
+		int temp = N;
+		for (int i = 0; i < temp; i++)
+		{
+			ret *= M--;
+
+			while (ret % N == 0 && N > 1)
+				ret /= N--;
+		}
+
+		while(N)
+			ret /= N--;
+
+		rets.push_back(ret);
+	}
+	
+
+	for (long long ret : rets)
+		cout << ret << "\n";
+
+
+}
 
 /*
 	https://www.acmicpc.net/problem/10828
@@ -1322,9 +1539,119 @@ pop
 123
 -1
 -1
+
+2 19
+2 40
 */
 
-void 스택() {}
+#include <stack>
+#include <sstream>
+
+void 스택() 
+{
+	int N;//num of orders(1 ~ 10000)
+
+	cin >> N;
+
+	string temp;
+	getline(cin, temp);
+
+	enum class ORDER
+	{
+		PUSH,
+		TOP,
+		SIZE,
+		EMPTY,
+		POP,
+	};
+
+	queue<ORDER> orders;
+	queue<int> nums;
+
+	while (N--)
+	{
+		string buffer;
+		getline(cin, buffer);
+
+		if (buffer == "") break;
+
+		stringstream ss(buffer);
+
+		while (true)
+		{
+			string buffer;
+			getline(ss, buffer, ' ');
+
+			if (buffer == "") break;
+
+			if (isdigit(buffer[0]))
+				nums.push(stoi(buffer));
+			else
+			{
+				if (buffer == "push")
+					orders.push(ORDER::PUSH);
+				else if (buffer == "pop")
+					orders.push(ORDER::POP);
+				else if (buffer == "size")
+					orders.push(ORDER::SIZE);
+				else if (buffer == "empty")
+					orders.push(ORDER::EMPTY);
+				else
+					orders.push(ORDER::TOP);
+			}
+		}
+
+	}
+
+	stack<int> s;
+
+	while (!orders.empty())
+	{
+		ORDER o = orders.front();
+		orders.pop();
+
+		switch (o)
+		{
+		case ORDER::PUSH:
+		{
+			s.push(nums.front());
+			nums.pop();
+		}
+			break;
+		case ORDER::TOP:
+		{
+			if (s.empty())
+				cout << "-1" << "\n";
+			else
+				cout << s.top() << "\n";
+		}
+			break;
+		case ORDER::SIZE:
+		{
+			cout << s.size() << "\n";
+		}
+			break;
+		case ORDER::EMPTY:
+		{
+			cout << s.empty() << "\n";
+		}
+			break;
+		case ORDER::POP:
+		{
+			if (s.empty())
+				cout << "-1" << "\n";
+			else
+			{
+				cout << s.top() << "\n";
+				s.pop();
+			}
+		}
+			break;
+		default:
+			break;
+		}
+	}
+}
 
 /*
 	https://www.acmicpc.net/problem/10773
@@ -1370,9 +1697,42 @@ void 스택() {}
 6
 예제 출력 2
 7
+
+2 44
+2 48
 */
 
-void 제로() {}
+void 제로() 
+{
+	int K;//(1 ~ 100000)
+
+	cin >> K;
+
+	int ret = 0;
+	stack<int> s;
+
+
+	while (K--)
+	{
+		int temp;
+
+		cin >> temp;
+
+		if (temp)
+		{
+			ret += temp;
+			s.push( temp);
+		}
+		else
+		{
+			ret -= s.top();
+			s.pop();
+
+		}
+	}
+
+	cout << ret;
+}
 
 /*
 	https://www.acmicpc.net/problem/9012
@@ -1412,9 +1772,58 @@ NO
 NO
 NO
 NO
+
+2 50
+
+2 51 ~ 3 03 휴식
+
+3 03
+3 09
+
 */
 
-void 괄호() {}
+void 괄호() 
+{
+	int T;//num of testCases
+
+	cin >> T;
+
+	vector<string> rets;
+
+	while (T--)
+	{
+		string temp;
+
+		cin >> temp;
+
+		stack<char> s;
+
+		rets.push_back("YES");
+
+		for (char a : temp)
+		{
+			if (a == '(')
+				s.push(a);
+			else
+			{
+				if (s.empty())
+				{
+					rets.back() = "NO";
+					break;
+				}
+				else
+					s.pop();
+			}
+		}
+
+		if (!s.empty())
+			rets.back() = "NO";
+
+	}
+
+	for (auto ret : rets)
+		cout << ret << "\n";
+}
 
 /*
 	https://www.acmicpc.net/problem/18258
@@ -1465,9 +1874,71 @@ front
 -1
 0
 3
+
+3 10
 */
 
-void 큐2() {}
+#include <stdio.h>
+#include <deque>
+
+void 큐2() 
+{
+	int N;//num of Orders(1~2,000,000)
+
+	cin >> N;
+	
+	queue<int> q;
+
+	int tail = -1;
+
+	while (N--)
+	{
+		string buffer;
+
+		cin >> buffer;
+
+		if (buffer == "push")
+		{
+			cin >> buffer;
+			int n = stoi(buffer);
+			q.push(n);
+			tail = n;
+		}
+		else if (buffer == "pop")
+		{
+			if (q.empty())
+				cout << "-1" << "\n";
+			else
+			{
+				cout << q.front() << "\n";
+				q.pop();
+			}
+		}
+		else if (buffer == "size")
+		{
+			cout << q.size() << "\n";
+		}
+		else if (buffer == "empty")
+		{
+			cout << q.empty() << "\n";
+		}
+		else if (buffer == "front")
+		{
+			if (q.empty())
+				cout << "-1" << "\n";
+			else
+				cout << q.front()<< "\n";
+		}
+		else if (buffer == "back")
+		{
+			if (q.empty())
+				cout << "-1" << "\n";
+			else
+				cout << tail << "\n";
+		}
+	}
+	
+}
 
 /*
 
