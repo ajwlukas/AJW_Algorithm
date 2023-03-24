@@ -1876,6 +1876,7 @@ front
 3
 
 3 10
+4 09
 */
 
 #include <stdio.h>
@@ -1937,7 +1938,6 @@ void 큐2()
 				cout << tail << "\n";
 		}
 	}
-	
 }
 
 /*
@@ -1979,9 +1979,82 @@ void 큐2()
 1000 999
 1000 999
 
+
+10 42
+10 59
 */
 
-void DFS와BFS() {}
+void DFS(int point, vector<vector<int>>& connections, vector<bool>& checkDFS)
+{
+	if (checkDFS[point]) return;
+
+	checkDFS[point] = true;
+
+	cout << point << " ";
+
+	for (int n : connections[point])
+		DFS(n, connections, checkDFS);
+}
+
+void BFS(int point, vector<vector<int>>& connections, vector<bool>& checkBFS)
+{
+	queue<int> q;
+
+	q.push(point);
+	checkBFS[point] = true;
+
+	while (!q.empty())
+	{
+		cout << q.front() << " ";
+
+		for (int n : connections[q.front()])
+		{
+			if (!checkBFS[n])
+			{
+				q.push(n);
+				checkBFS[n] = true;
+			}
+		}
+
+		q.pop();
+	}
+
+}
+
+void DFS와BFS() 
+{
+	int N;//(1 ~ 1000)
+	int M;//(1 ~ 10000)
+
+	int V;//Start Point
+
+	cin >> N >> M >> V;
+
+	vector<vector<int>> connections(N + 1);
+
+	vector<bool> checkDFS(N + 1, false);
+	vector<bool> checkBFS(N + 1, false);
+
+	while (M--)
+	{
+		int A, B;
+
+		cin >> A >> B;
+
+		connections[A].push_back(B);
+		connections[B].push_back(A);
+	}
+
+	for (auto& c : connections)
+		sort(c.begin(), c.end());
+
+	DFS(V, connections, checkDFS);
+	cout << "\n";
+	BFS(V, connections, checkBFS);
+
+
+
+}
 
 /*
 	https://www.acmicpc.net/problem/2108
@@ -2050,9 +2123,88 @@ N개의 수가 주어졌을 때, 네 가지 기본 통계값을 구하는 프로그램을 작성하시오.
 0
 0
 1
+
+11 16
+11 55
+
 */
 
-void 통계학() {}
+void 통계학()
+{
+	int N;//num of digits(1 ~ 500,000) N % 2 == 1
+
+	cin >> N;
+
+	vector<int> numbers;
+	map<int, int> m;
+
+	numbers.reserve(N);
+
+	int total = 0;
+
+	int maximum = INT_MIN;
+
+	int minimum = INT_MAX;
+
+	int mostFrequent = -1;
+
+	vector<int> v = {};
+
+	for(int i = 0; i < N; i++)
+	{
+		int num;
+
+		cin >> num;
+
+		total += num;
+
+		int mostCount = m[mostFrequent];
+
+		m[num]++;
+
+		if (mostCount < m[num])
+		{
+			v.clear();
+			v.push_back(num);
+
+			mostFrequent = num;
+		}
+		else if (mostCount == m[num])
+		{
+			v.push_back(num);
+			mostFrequent = num;
+		}
+
+		maximum = max(maximum, num);
+		minimum = min(minimum, num);
+
+		numbers.push_back(num);
+	}
+
+	sort(numbers.begin(), numbers.end());
+	sort(v.begin(), v.end());
+
+	cout.setf(ios::fixed);
+	cout.precision(0);
+
+	//산술평균
+	float a = round(total / (float)N);
+	a = a == -0 ? 0 : a;
+
+	cout << a << "\n";
+
+	//중앙값
+	cout << numbers[N / 2] << "\n";
+
+	//최빈값
+	if (v.size() > 1)
+		cout << v[1] << "\n";
+	else
+		cout << mostFrequent << "\n";
+
+	//범위
+	cout << maximum - minimum;
+}
 
 /*
 	https://www.acmicpc.net/problem/2630
@@ -2090,9 +2242,114 @@ void 통계학() {}
 예제 출력 1
 9
 7
+
+2 00
+2 33
 */
 
-void 색종이만들기() {}
+bool CheckClear(vector<vector<bool>>& paper)
+{
+	int size = paper.size();
+
+	if (size == 1) return true;
+
+	bool init = paper[0][0];
+
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			if (paper[i][j] != init) return false;
+		}
+	}
+
+	return true;
+}
+
+vector<vector<vector<bool>>> DividePaper(vector<vector<bool>>& paper)
+{
+	int size = paper.size();
+
+	int half = size / 2;
+
+	int add[4][2] = { {0,0},{0,half},{half,0},{half,half} };
+
+	vector<vector<vector<bool>>> papers(4);
+
+	for (int i = 0; i < 4; i++)
+	{
+		int x = add[i][0];
+		int y = add[i][1];
+
+		vector<vector<bool>>& piece = papers[i];
+		piece.resize(half);
+
+		for (int j = 0; j < half; j++)
+		{
+			vector<bool>& line = piece[j];
+			line.resize(half);
+			for (int k = 0; k < half; k++)
+			{
+				line[k] = paper[j + x][k + y];
+			}
+		}
+	}
+
+	return papers;
+}
+
+void 색종이만들기() 
+{
+	int N;//한 변의 길이 (2, 4, 8, 16, 32, 64, 128)
+
+	cin >> N;
+
+	vector<vector<bool>> wholePaper(N);
+
+	//input;
+	for (int i = 0; i < N; i++)
+	{
+		vector<bool>& line = wholePaper[i];
+		line.resize(N);
+
+		for (int j = 0; j < N; j++)
+		{
+			int b;
+			cin >> b;
+			line[j] = b;
+		}
+	}
+
+	queue<vector<vector<bool>>> q;
+
+	q.push(wholePaper);
+
+	int white = 0;
+	int blue = 0;
+
+	while (!q.empty())
+	{
+		vector<vector<bool>> p = q.front();
+		q.pop();
+
+		if (!CheckClear(p))
+		{
+			auto papers = DividePaper(p);
+
+			for (auto paper : papers)
+				q.push(paper);
+		}
+		else
+		{
+			if (p[0][0] == 1)
+				blue++;
+			else
+				white++;
+		}
+	}
+
+	cout << white << "\n" << blue;
+}
 
 /*
 	https://www.acmicpc.net/problem/15650
@@ -2128,9 +2385,103 @@ void 색종이만들기() {}
 4 4
 예제 출력 3
 1 2 3 4
+
+2 35
+
+21분
+
+2 56
+3 00
+
+50분
+
+3 50
+
 */
 
-void N과M2() {}
+void GetSequence(int start,int end, int depth, int depthLimit, vector<int> v, vector<vector<int>>& vs)
+{
+	for (int i = start; i <= end - depthLimit + depth; i++)
+	{
+		vector<int> temp = v;
+
+		temp.push_back(i);
+
+		if (temp.size() >= depthLimit)
+			vs.push_back(temp);
+
+		else
+		GetSequence(i + 1, end, depth + 1, depthLimit, temp, vs);
+	}
+}
+
+void N과M2() 
+{
+	int N, M;//(1 <= M <= N <= 8)
+	//m = length of sequence
+	//n = 1~n
+	cin >> N >> M;
+
+	vector<vector<int>> v;
+
+	GetSequence(1, N, 1, M, vector<int>(),v);
+
+	/*for (int i = 0; i < N - 3; i++)
+	{
+		for (int j = i + 1; j < N - 2; j++)
+		{
+			for (int k = j + 1; k < N - 1; k++)
+			{
+				for (int l = k + 1; l < N; l++)
+				{
+					{i, j, k, l};
+				}
+			}
+		}
+	}*/
+
+
+	for (auto a : v)
+	{
+		for (int n : a)
+		{
+			cout << n << " ";
+		}
+		cout << "\n";
+	}
+
+}
+
+void Seq(int num, int upto,int cnt, vector<int>& v, int depth)
+{
+	if (cnt == depth)
+	{
+		for (int n : v)
+			cout << n << " ";
+		cout << "\n";
+	}
+
+	for (int i = num; i <= upto; i++)
+	{
+		v.push_back(i);
+
+		Seq(i + 1, upto, cnt + 1, v, depth);
+
+		v.pop_back();
+	}
+}
+
+void N과M2다시()
+{
+	int N, M;//(1 <= M <= N <= 8)
+	//m = length of sequence
+	//n = 1~n
+	cin >> N >> M;
+
+	vector<int> v;
+	Seq(1, N, 0, v, M);
+
+}
 
 /*
 	https://www.acmicpc.net/problem/9663
