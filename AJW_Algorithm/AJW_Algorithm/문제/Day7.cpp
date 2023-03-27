@@ -50,7 +50,7 @@
 	1
 
 */
-void 그룹단어체커() 
+void 그룹단어체커()
 {
 	int N;//numofwords (1 ~ 100)
 
@@ -73,7 +73,7 @@ void 그룹단어체커()
 
 		char before = '0';
 
-		for(char a : inputs[i])
+		for (char a : inputs[i])
 		{
 			//if its first time
 			if (checker.find(a) == checker.end())
@@ -132,7 +132,7 @@ void 그룹단어체커()
 	3
 */
 
-void 설탕배달() 
+void 설탕배달()
 {
 	int N;//weight (3~5000)
 
@@ -205,7 +205,7 @@ void 설탕배달()
 	소요시간 : 23분
 */
 
-void FlymetotheAlphaCentauri() 
+void FlymetotheAlphaCentauri()
 {
 	int T;//num of test cases
 
@@ -307,14 +307,14 @@ void FlymetotheAlphaCentauri()
 */
 
 
-void 베르트랑공준() 
+void 베르트랑공준()
 {
 	int t = -1;
 
 	vector<int> ns;//(1~123456)
 
 	int max = 0;
-	while (cin >> t ,t)
+	while (cin >> t, t)
 	{
 		ns.push_back(t);
 
@@ -325,7 +325,7 @@ void 베르트랑공준()
 
 	int size = ns.size();
 
-	vector<int> ret(size,0);
+	vector<int> ret(size, 0);
 
 	set<int> primenumbers;
 
@@ -427,7 +427,7 @@ void StringPlusPlus(string& str)
 
 }
 
-void 영화감독숌() 
+void 영화감독숌()
 {
 
 	int N;//(1 ~ 10000)
@@ -617,7 +617,7 @@ w(50, 50, 50) = 1048576
 w(-1, 7, 18) = 1
 
 시작 1037
-     11 30
+	 11 30
 */
 
 //int coun = 0;
@@ -633,7 +633,7 @@ int W(int a, int b, int c)
 
 	bool condition0 = a <= 0 || b <= 0 || c <= 0;//a,b,c 중 하나라도 0이거나 음수인 정수라면
 	bool condition1 = a > 20 || b > 20 || c > 20;//a,b,c 중 하나라도 20 초과라면
-	bool condition2 = a < b && b < c;//a, b, c 순으로 증가 한다면
+	bool condition2 = a < b&& b < c;//a, b, c 순으로 증가 한다면
 
 	if (condition0)
 		return 1;
@@ -699,7 +699,7 @@ int W(int a, int b, int c)
 	return ret[0] + ret[1] + ret[2] - ret[3];
 }
 
-void 신나는함수실행() 
+void 신나는함수실행()
 
 {
 	vector<vector<int>> abcs;
@@ -764,7 +764,7 @@ long long Wave(int i, vector<long long>& p)
 		return p[i];
 }
 
-void 파도반수열() 
+void 파도반수열()
 {
 	int T;//num of TestCases
 
@@ -859,10 +859,10 @@ i(2 ≤ i ≤ N-1)번 집의 색은 i-1번, i+1번 집의 색과 같지 않아야 한다.
 끝 2 40
 */
 
-void RGB거리() 
+void RGB거리()
 {
 	int N;//num of houses(2 ~ 1000)
-	
+
 	cin >> N;
 
 	vector<vector<int>> costs(N);//(1~1000)
@@ -887,11 +887,11 @@ void RGB거리()
 			minimumCosts[0] = costs[0];
 		else
 		{
-			minimumCosts[i][0] = min(minimumCosts[i- 1][1], minimumCosts[i-1][2]);
+			minimumCosts[i][0] = min(minimumCosts[i - 1][1], minimumCosts[i - 1][2]);
 			minimumCosts[i][0] += costs[i][0];
-			minimumCosts[i][1] = min(minimumCosts[i- 1][0], minimumCosts[i-1][2]);
+			minimumCosts[i][1] = min(minimumCosts[i - 1][0], minimumCosts[i - 1][2]);
 			minimumCosts[i][1] += costs[i][1];
-			minimumCosts[i][2] = min(minimumCosts[i- 1][0], minimumCosts[i-1][1]);
+			minimumCosts[i][2] = min(minimumCosts[i - 1][0], minimumCosts[i - 1][1]);
 			minimumCosts[i][2] += costs[i][2];
 
 		}
@@ -938,7 +938,7 @@ void RGB거리()
 	끝 2 58
 */
 
-void 정수삼각형() 
+void 정수삼각형()
 {
 	int n;//size of pyramid(1 ~ 500)
 
@@ -1037,7 +1037,7 @@ void 정수삼각형()
 */
 
 
-void 동전0() 
+void 동전0()
 {
 	int N, K;//(N = 1 ~ 10, K = 1 ~ 100,000,000)(억)
 
@@ -1045,7 +1045,7 @@ void 동전0()
 
 	vector<int> values(N);
 
-	while(N--)
+	while (N--)
 	{
 		cin >> values[N];
 	}
@@ -1097,7 +1097,7 @@ void 동전0()
 
 #include <algorithm>
 
-void ATM() 
+void ATM()
 {
 	int N;//(1~1000)
 
@@ -1130,32 +1130,32 @@ void ATM()
 출력
 첫째 줄에 N을 출력한다. N은 항상 32비트 부호있는 정수로 표현할 수 있다.
 
-예제 입력 1 
+예제 입력 1
 2
 4 2
-예제 출력 1 
+예제 출력 1
 8
-예제 입력 2 
+예제 입력 2
 1
 2
-예제 출력 2 
+예제 출력 2
 4
-예제 입력 3 
+예제 입력 3
 6
 3 4 2 12 6 8
-예제 출력 3 
+예제 출력 3
 24
-예제 입력 4 
+예제 입력 4
 14
 14 26456 2 28 13228 3307 7 23149 8 6614 46298 56 4 92596
-예제 출력 4 
+예제 출력 4
 185192
 
  11 31
  11 36
 */
 
-void 약수() 
+void 약수()
 {
 	int N;//num of dividers
 
@@ -1164,7 +1164,7 @@ void 약수()
 	int max = 0;
 	int min = INT_MAX;
 
-	while(N--)
+	while (N--)
 	{
 		int temp;
 
@@ -1198,7 +1198,7 @@ void 약수()
 11 56
 */
 
-void 최대공약수와최소공배수() 
+void 최대공약수와최소공배수()
 {
 	int A, B;
 
@@ -1216,7 +1216,7 @@ void 최대공약수와최소공배수()
 			primeNumbersA[i]++;
 		}
 	}
-	
+
 	for (int i = 2; i <= B; i++)
 	{
 		while (B % i == 0)
@@ -1247,7 +1247,7 @@ void 최대공약수와최소공배수()
 		}
 		else
 		{
-			commonMultiplier *= pow(n ,max(primeNumbersA[n], primeNumbersB[n]));
+			commonMultiplier *= pow(n, max(primeNumbersA[n], primeNumbersB[n]));
 		}
 	}
 
@@ -1283,7 +1283,7 @@ void 최대공약수와최소공배수()
 1 25
 */
 
-void 최소공배수() 
+void 최소공배수()
 {
 	int T;//(1~1000) num of testCases
 
@@ -1383,7 +1383,7 @@ long long Factorial(long long n)
 	return n * Factorial(n - 1);
 }
 
-void 이항계수1() 
+void 이항계수1()
 {
 	int N, K;//N(1~10), K(0~N);
 
@@ -1435,7 +1435,7 @@ void 이항계수1()
 
 */
 
-void 다리놓기() 
+void 다리놓기()
 {
 	int T;//num of testCases
 
@@ -1448,7 +1448,7 @@ void 다리놓기()
 		int N, M;//(0 < N <= M < 30)
 
 		cin >> N >> M;
-		
+
 
 		//mCn
 
@@ -1463,12 +1463,12 @@ void 다리놓기()
 				ret /= N--;
 		}
 
-		while(N)
+		while (N)
 			ret /= N--;
 
 		rets.push_back(ret);
 	}
-	
+
 
 	for (long long ret : rets)
 		cout << ret << "\n";
@@ -1547,7 +1547,7 @@ pop
 #include <stack>
 #include <sstream>
 
-void 스택() 
+void 스택()
 {
 	int N;//num of orders(1 ~ 10000)
 
@@ -1617,7 +1617,7 @@ void 스택()
 			s.push(nums.front());
 			nums.pop();
 		}
-			break;
+		break;
 		case ORDER::TOP:
 		{
 			if (s.empty())
@@ -1625,17 +1625,17 @@ void 스택()
 			else
 				cout << s.top() << "\n";
 		}
-			break;
+		break;
 		case ORDER::SIZE:
 		{
 			cout << s.size() << "\n";
 		}
-			break;
+		break;
 		case ORDER::EMPTY:
 		{
 			cout << s.empty() << "\n";
 		}
-			break;
+		break;
 		case ORDER::POP:
 		{
 			if (s.empty())
@@ -1646,7 +1646,7 @@ void 스택()
 				s.pop();
 			}
 		}
-			break;
+		break;
 		default:
 			break;
 		}
@@ -1702,7 +1702,7 @@ void 스택()
 2 48
 */
 
-void 제로() 
+void 제로()
 {
 	int K;//(1 ~ 100000)
 
@@ -1721,7 +1721,7 @@ void 제로()
 		if (temp)
 		{
 			ret += temp;
-			s.push( temp);
+			s.push(temp);
 		}
 		else
 		{
@@ -1782,7 +1782,7 @@ NO
 
 */
 
-void 괄호() 
+void 괄호()
 {
 	int T;//num of testCases
 
@@ -1882,12 +1882,12 @@ front
 #include <stdio.h>
 #include <deque>
 
-void 큐2() 
+void 큐2()
 {
 	int N;//num of Orders(1~2,000,000)
 
 	cin >> N;
-	
+
 	queue<int> q;
 
 	int tail = -1;
@@ -1928,7 +1928,7 @@ void 큐2()
 			if (q.empty())
 				cout << "-1" << "\n";
 			else
-				cout << q.front()<< "\n";
+				cout << q.front() << "\n";
 		}
 		else if (buffer == "back")
 		{
@@ -1952,30 +1952,30 @@ void 큐2()
 출력
 첫째 줄에 DFS를 수행한 결과를, 그 다음 줄에는 BFS를 수행한 결과를 출력한다. V부터 방문된 점을 순서대로 출력하면 된다.
 
-예제 입력 1 
+예제 입력 1
 4 5 1
 1 2
 1 3
 1 4
 2 4
 3 4
-예제 출력 1 
+예제 출력 1
 1 2 4 3
 1 2 3 4
-예제 입력 2 
+예제 입력 2
 5 5 3
 5 4
 5 2
 1 2
 3 4
 3 1
-예제 출력 2 
+예제 출력 2
 3 1 2 5 4
 3 1 4 2 5
-예제 입력 3 
+예제 입력 3
 1000 1 1000
 999 1000
-예제 출력 3 
+예제 출력 3
 1000 999
 1000 999
 
@@ -2021,7 +2021,7 @@ void BFS(int point, vector<vector<int>>& connections, vector<bool>& checkBFS)
 
 }
 
-void DFS와BFS() 
+void DFS와BFS()
 {
 	int N;//(1 ~ 1000)
 	int M;//(1 ~ 10000)
@@ -2150,7 +2150,7 @@ void 통계학()
 
 	vector<int> v = {};
 
-	for(int i = 0; i < N; i++)
+	for (int i = 0; i < N; i++)
 	{
 		int num;
 
@@ -2298,7 +2298,7 @@ vector<vector<vector<bool>>> DividePaper(vector<vector<bool>>& paper)
 	return papers;
 }
 
-void 색종이만들기() 
+void 색종이만들기()
 {
 	int N;//한 변의 길이 (2, 4, 8, 16, 32, 64, 128)
 
@@ -2399,7 +2399,7 @@ void 색종이만들기()
 
 */
 
-void GetSequence(int start,int end, int depth, int depthLimit, vector<int> v, vector<vector<int>>& vs)
+void GetSequence(int start, int end, int depth, int depthLimit, vector<int> v, vector<vector<int>>& vs)
 {
 	for (int i = start; i <= end - depthLimit + depth; i++)
 	{
@@ -2411,11 +2411,11 @@ void GetSequence(int start,int end, int depth, int depthLimit, vector<int> v, ve
 			vs.push_back(temp);
 
 		else
-		GetSequence(i + 1, end, depth + 1, depthLimit, temp, vs);
+			GetSequence(i + 1, end, depth + 1, depthLimit, temp, vs);
 	}
 }
 
-void N과M2() 
+void N과M2()
 {
 	int N, M;//(1 <= M <= N <= 8)
 	//m = length of sequence
@@ -2424,7 +2424,7 @@ void N과M2()
 
 	vector<vector<int>> v;
 
-	GetSequence(1, N, 1, M, vector<int>(),v);
+	GetSequence(1, N, 1, M, vector<int>(), v);
 
 	/*for (int i = 0; i < N - 3; i++)
 	{
@@ -2452,7 +2452,7 @@ void N과M2()
 
 }
 
-void Seq(int num, int upto,int cnt, vector<int>& v, int depth)
+void Seq(int num, int upto, int cnt, vector<int>& v, int depth)
 {
 	if (cnt == depth)
 	{
@@ -2500,9 +2500,104 @@ N이 주어졌을 때, 퀸을 놓는 방법의 수를 구하는 프로그램을 작성하시오.
 8
 예제 출력 1
 92
+
+10 51
+11 26
+
 */
 
-void NQueen() {}
+namespace NQ
+{
+
+	int N;//(1 ~ 15)
+
+	vector<vector<bool>> board;
+
+	int ret = 0;
+
+
+	vector<pair<int, int>> Fill(int x, int y)
+	{
+		vector<pair<int, int>> ret = {};
+		//아래
+		for (int col = x, row = y; row < N; row++)
+		{
+			if (!board[row][col])
+			{
+				board[row][col] = true;
+				ret.push_back(make_pair(row, col));
+			}
+		}
+
+
+		//왼 대각
+		for (int col = x, row = y; row < N && col >= 0; row++, col--)
+		{
+			if (!board[row][col])
+			{
+				board[row][col] = true;
+				ret.push_back(make_pair(row, col));
+			}
+		}
+
+		//우대각
+		for (int col = x, row = y; row < N && col < N; row++, col++)
+		{
+			if (!board[row][col])
+			{
+				board[row][col] = true;
+				ret.push_back(make_pair(row, col));
+			}
+		}
+
+		return ret;
+	}
+
+	void Solution(int depth)
+	{
+		if (depth == N)
+		{
+			ret++;
+			return;
+		}
+
+		for (int i = 0; i < N; i++)
+		{
+			vector<pair<int, int>> temp = {};
+			if (!board[depth][i])
+			{
+				temp = Fill(i, depth);
+			}
+			else
+				continue;
+
+			Solution(depth + 1);
+
+
+			for (auto t : temp)
+			{
+				board[t.first][t.second] = false;
+			}
+		}
+	}
+
+
+	void NQueen()
+	{
+
+		cin >> N;
+
+		board.resize(N);
+
+		for (int i = 0; i < N; i++)
+			board[i].resize(N, false);
+
+		Solution(0);
+
+		cout << ret;
+
+	}
+}
 
 /*
 	https://www.acmicpc.net/problem/2579
@@ -2546,9 +2641,56 @@ void NQueen() {}
 20
 예제 출력 1
 75
+
+11 31
+
+11 51(휴식)
+
+13 00
+13 26
 */
 
-void 계단오르기() {}
+void 계단오르기()
+{
+	int N;//num of stairs
+	cin >> N;
+
+	vector<int> stairs(N);
+
+	for (int i = 0; i < N; i++)
+		cin >> stairs[i];
+
+	vector<vector<int>> scoreBoard(N);//pair : first stair in row, second score
+
+	for (int i = 0; i < N; i++)
+		scoreBoard[i].resize(2);
+
+
+	scoreBoard[0][0] = stairs[0];
+
+
+	if (N > 1)
+	{
+		scoreBoard[1][0] = stairs[1];
+		scoreBoard[1][1] = stairs[0] + stairs[1];
+	}
+
+	for (int i = 2; i < N; i++)
+	{
+		const vector<int>& before = scoreBoard[i - 1];
+
+		scoreBoard[i][1] = before[0] + stairs[i];
+
+		const vector<int>& beforeBefore = scoreBoard[i - 2];
+
+		scoreBoard[i][0] = beforeBefore[0] > beforeBefore[1] ? beforeBefore[0] : beforeBefore[1];
+
+		scoreBoard[i][0] += stairs[i];
+	}
+
+	cout << max(scoreBoard[N - 1][0], scoreBoard[N - 1][1]);
+
+}
 
 /*
 	https://www.acmicpc.net/problem/1002
@@ -2578,9 +2720,52 @@ void 계단오르기() {}
 2
 1
 0
+
+1 28
+1 47
 */
 
-void 터렛() {}
+void 터렛() 
+{
+	int T;//num of TestCase
+
+	cin >> T;
+
+	while (T--)
+	{
+		int x1, y1, r1, x2, y2, r2;
+
+		cin >> x1 >> y1 >> r1 >> x2 >> y2 >> r2;
+
+
+		float distance = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+
+		float shrt = min(r1, r2);
+		float lng = max(r1, r2);
+
+		//동심원
+		if (!distance)
+		{
+			if (shrt == lng)
+				cout << "-1" << "\n";
+			else
+				cout << "0" << "\n";
+		}
+		else if (distance + shrt < lng)
+			cout << "0" << "\n";
+		else if (distance + shrt == lng)
+			cout << "1" << "\n";
+		else if (distance < shrt + lng)
+			cout << "2" << "\n";
+		else if (distance == shrt + lng)
+			cout << "1" << "\n";
+		else if (distance > shrt + lng)
+			cout << "0" << "\n";
+
+	}
+
+
+}
 
 /*
 	https://www.acmicpc.net/problem/2798
@@ -2613,9 +2798,62 @@ N장의 카드에 써져 있는 숫자가 주어졌을 때, M을 넘지 않으면서 M에 최대한 가까운 �
 93 181 245 214 315 36 185 138 216 295
 예제 출력 2
 497
+
+2 07
+2 27
 */
 
-void 블랙잭() {}
+namespace blck
+{
+	int ret = 0;
+	int addUp = 0;
+	int N;//(3~100)
+	int M;//(10~300000)
+	vector<int> cards;
+
+	void Solution(int index, int cardCount)
+	{
+
+		for (int i = index; i < N; i++)
+		{
+			addUp += cards[i];
+
+			if (addUp > M)
+			{
+				addUp -= cards[i];
+				continue;
+			}
+			else if (cardCount == 2 && addUp <= M)
+			{
+				ret = max(ret, addUp);
+				addUp -= cards[i];
+				return;
+			}
+
+			Solution(i + 1, cardCount + 1);
+
+			addUp -= cards[i];
+		}
+	}
+	
+	void 블랙잭()
+	{
+		cin >> N >> M;
+	
+		cards.resize(N);
+	
+		for (int i = 0; i < N; i++)
+			cin >> cards[i];
+	
+		sort(cards.begin(), cards.end(), greater<int>());
+	
+		Solution(0, 0);
+
+		cout << ret;
+	}
+	
+
+}
 
 /*
 	https://www.acmicpc.net/problem/2231
@@ -2630,13 +2868,45 @@ void 블랙잭() {}
 출력
 첫째 줄에 답을 출력한다. 생성자가 없는 경우에는 0을 출력한다.
 
-예제 입력 1 
+예제 입력 1
 216
-예제 출력 1 
+예제 출력 1
 198
+
+2 29
+2 42
 */
 
-void 분해합() {}
+void 분해합() 
+{
+	int N;//1~1,000,000(백만)
+
+	cin >> N;
+
+	int len = log10(N) + 1;
+
+	int ret = 0;
+
+	for (int i = N - 9 * len; i <= N; i++)
+	{
+		int add = i;
+		int temp = i;
+
+		for (int j = 0; j < len; j++)
+		{
+			add += temp % 10;
+			temp /= 10;
+		}
+
+		if (add == N)
+		{
+			ret = i;
+			break;
+		}
+	}
+
+	cout << ret;
+}
 
 /*
 	https://www.acmicpc.net/problem/1541
@@ -2666,9 +2936,57 @@ void 분해합() {}
 00009-00009
 예제 출력 3
 0
+
+2 55
+3 12
+
 */
 
-void 잃어버린괄호() {}
+void 잃어버린괄호() 
+{
+	string equation;
+
+	cin >> equation;
+
+	string temp = "";
+
+	int ret = 0;
+
+	int itemp = 0;
+
+	char last = '0';
+
+	for (int i = equation.length() - 1; i >= 0; i--)
+	{
+		char& a = equation[i];
+		if (a != '+' && a != '-')
+			temp = a + temp;
+		else if (a == '-')
+		{
+			last = a;
+
+			itemp += stoi(temp);
+			temp.clear();
+			
+			ret -= itemp;
+			itemp = 0;
+		}
+		else if (a == '+')
+		{
+			last = a;
+
+			itemp += stoi(temp);
+			temp.clear();
+		}
+	}
+
+	if (last == '+')
+		ret += itemp;
+
+	ret += stoi(temp);
+
+	cout << ret;
+}
 
 /*
 	https://www.acmicpc.net/problem/11866
@@ -2689,9 +3007,51 @@ N과 K가 주어지면 (N, K)-요세푸스 순열을 구하는 프로그램을 작성하시오.
 7 3
 예제 출력 1
 <3, 6, 2, 7, 5, 1, 4>
+
+3 13
 */
 
-void 요세푸스문제0() {}
+void 요세푸스문제0() 
+{
+	int N, K;// (1 ≤ K ≤ N ≤ 1,000)
+
+	cin >> N >> K;
+
+	vector<bool> isDead(N, false);
+	vector<int> rets;
+
+	rets.reserve(N);
+	
+	int index = 0;
+	int count = 0;
+
+	while (true)
+	{
+		if (!isDead[index])
+			count++;
+
+		if (count == K)
+		{
+			count = 0;
+
+			isDead[index] = true;
+			rets.push_back(index + 1);
+
+			if (rets.size() == N) break;
+		}
+
+		index = index + 1 >= N ? 0 : index + 1;
+
+
+	}
+
+	cout << "<";
+
+	for (int i = 0; i < rets.size() - 1; i++)
+		cout << rets[i] << ", ";
+
+	cout << rets.back() << ">";
+}
 
 /*
 	https://www.acmicpc.net/problem/1992
