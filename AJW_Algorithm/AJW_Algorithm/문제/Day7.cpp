@@ -2725,7 +2725,7 @@ void 계단오르기()
 1 47
 */
 
-void 터렛() 
+void 터렛()
 {
 	int T;//num of TestCase
 
@@ -2835,23 +2835,24 @@ namespace blck
 			addUp -= cards[i];
 		}
 	}
-	
+
 	void 블랙잭()
 	{
 		cin >> N >> M;
-	
+
 		cards.resize(N);
-	
+
 		for (int i = 0; i < N; i++)
 			cin >> cards[i];
-	
+
 		sort(cards.begin(), cards.end(), greater<int>());
-	
+
 		Solution(0, 0);
 
 		cout << ret;
 	}
-	
+
+
 
 }
 
@@ -2877,7 +2878,7 @@ namespace blck
 2 42
 */
 
-void 분해합() 
+void 분해합()
 {
 	int N;//1~1,000,000(백만)
 
@@ -2942,7 +2943,7 @@ void 분해합()
 
 */
 
-void 잃어버린괄호() 
+void 잃어버린괄호()
 {
 	string equation;
 
@@ -2967,7 +2968,7 @@ void 잃어버린괄호()
 
 			itemp += stoi(temp);
 			temp.clear();
-			
+
 			ret -= itemp;
 			itemp = 0;
 		}
@@ -3009,9 +3010,10 @@ N과 K가 주어지면 (N, K)-요세푸스 순열을 구하는 프로그램을 작성하시오.
 <3, 6, 2, 7, 5, 1, 4>
 
 3 13
+3 25
 */
 
-void 요세푸스문제0() 
+void 요세푸스문제0()
 {
 	int N, K;// (1 ≤ K ≤ N ≤ 1,000)
 
@@ -3021,7 +3023,7 @@ void 요세푸스문제0()
 	vector<int> rets;
 
 	rets.reserve(N);
-	
+
 	int index = 0;
 	int count = 0;
 
@@ -3082,9 +3084,80 @@ void 요세푸스문제0()
 11110011
 예제 출력 1
 ((110(0101))(0010)1(0001))
+
+10 53
+11 21
+
 */
 
-void 쿼드트리() {}
+namespace Quad
+{
+	int N;//영상의 크기(2의 제곱 수)(1,2,4,8,16,32,64)
+
+	vector<vector<bool>> paper;
+
+	bool CheckClear(int xS, int xE, int yS, int yE)
+	{
+		bool init = paper[yS][xS];
+
+		for (int y = yS; y < yE; y++)
+		{
+			for (int x = xS; x < xE; x++)
+			{
+				if (init != paper[y][x]) return false;
+			}
+		}
+
+		return true;
+	}
+
+	void Solution(int xS, int xE, int yS, int yE)
+	{
+
+		if (CheckClear(xS, xE, yS, yE))
+		{
+			cout << paper[yS][xS];
+		}
+		else
+		{
+			int half = (xE - xS) / 2;
+
+			cout << "(";
+			Solution(xS, xE - half, yS, yE - half);//LT
+			Solution(xS + half, xE, yS, yE - half);//RT
+			Solution(xS, xE - half, yS + half, yE);//LB
+			Solution(xS + half, xE, yS + half, yE);//RB
+			cout << ")";
+		}
+
+	}
+
+	void 쿼드트리()
+	{
+		cin >> N;
+
+		paper.resize(N);
+
+		string temp;
+
+		getline(cin, temp);
+
+
+		for (int i = 0; i < N; i++)
+		{
+			paper[i].resize(N);
+
+			getline(cin, temp);
+
+			int j = 0;
+			for (const char& a : temp)
+				paper[i][j++] = a - '0';
+		}
+
+		Solution(0, N, 0, N);
+
+	}
+}
 
 /*
 	https://www.acmicpc.net/problem/11054
@@ -3106,9 +3179,66 @@ void 쿼드트리() {}
 1 5 2 1 4 3 4 5 2 1
 예제 출력 1
 7
+
+11 24
+11 36
 */
 
-void 가장긴바이토닉부분수열() {}
+void 가장긴바이토닉부분수열()
+{
+	int N;//수열의 크기(1 ~ 1000)
+
+	cin >> N;
+
+	vector<int> v(N);
+	vector<int> checkL(N, 0);//내 왼쪽에 나보다 작은 것 갯수
+	vector<int> checkR(N, 0);// ''
+
+
+	for (int i = 0; i < N; i++)
+	{
+		cin >> v[i];
+	}
+
+
+	//left to right check increase
+	for (int i = 1; i < N; i++)
+	{
+		for (int j = 0; j < i; j++)
+		{
+			if (v[i] > v[j])//내가 더 크면서
+			{
+				//나보다 갯수가 같거나 많으면
+				if (checkL[i] <= checkL[j])
+					checkL[i] = checkL[j] + 1;
+			}
+		}
+	}
+
+	//right to left check increase
+	for (int i = N - 2; i >= 0; i--)
+	{
+		for (int j = N - 1; j > i; j--)
+		{
+			if (v[i] > v[j])//내가 더 크면서
+			{
+				//나보다 갯수가 같거나 많으면
+				if (checkR[i] <= checkR[j])
+					checkR[i] = checkR[j] + 1;
+			}
+		}
+	}
+
+	int ret = 0;
+
+	for (int i = 0; i < N; i++)
+	{
+		ret = max(ret, checkL[i] + checkR[i]);
+	}
+
+	cout << ret + 1;
+
+}
 
 /*
 	https://www.acmicpc.net/problem/2667
@@ -3137,9 +3267,102 @@ void 가장긴바이토닉부분수열() {}
 7
 8
 9
+
+1 39
+2 01
 */
 
-void 단지번호붙이기() {}
+namespace House
+{
+	int N;//(5 ~ 25)
+	vector<vector<int>> houses;
+
+	struct Point
+	{
+		int x;
+		int y;
+	};
+
+	Point FindHouse(int x, int y)
+	{
+		for (int i = y; i < N; i++)
+		{
+			for (int j = x; j < N; j++)
+			{
+				if (houses[i][j] == 1)
+					return Point({ j, i });
+			}
+		}
+
+		return Point({ -1,-1 });
+	}
+
+	void GetConnectedHouses(int x, int y, int& count)
+	{
+		if (x < 0 || x >= N || y < 0 || y >= N) return;
+
+		if (houses[y][x] == 1)
+		{
+			houses[y][x] = 0;
+			count++;
+
+			GetConnectedHouses(x + 1, y, count);
+			GetConnectedHouses(x - 1, y, count);
+			GetConnectedHouses(x, y + 1, count);
+			GetConnectedHouses(x, y - 1, count);
+		}
+	}
+
+	void 단지번호붙이기()
+	{
+		string temp;
+
+		cin >> N;
+
+		getline(cin, temp);
+
+		houses.resize(N);
+
+		vector<int> rets;
+
+		for (int i = 0; i < N; i++)
+		{
+			getline(cin, temp);
+			houses[i].reserve(N);
+
+			for (const char& a : temp)
+				houses[i].push_back(a - '0');
+		}
+
+		int danji = 0;
+
+		while (true)
+		{
+			Point p = FindHouse(0, 0);
+
+			if (p.x == -1) break;
+
+			danji++;
+
+
+			int num = 0;
+			 GetConnectedHouses(p.x, p.y, num);
+
+			rets.push_back(num);
+		}
+
+		cout << danji << "\n";
+
+		sort(rets.begin(), rets.end());
+
+		for (int ret : rets)
+			cout << ret << "\n";
+
+	}
+
+
+}
+
 
 /*
 	https://www.acmicpc.net/problem/1753
@@ -3167,6 +3390,71 @@ void 단지번호붙이기() {}
 3
 7
 INF
+
+2 02
 */
 
-void 최단경로() {}
+namespace Route
+{
+	class Node
+	{
+	public:
+
+		int cost = 0;
+
+		vector<pair<Node*, int>> connections;
+	};
+
+	class Comp
+	{
+	public:
+		bool operator()(const Node& Left, const Node& Right)
+		{
+
+			return Left.cost < Right.cost;
+		}
+	};
+
+	vector<Node> nodes;
+
+	void FindRoute(int index)
+	{
+		priority_queue<Node, vector<Node>, Comp> q;
+
+		q.push(nodes[index]);
+
+		while (q.empty())
+		{
+			Node top = q.top();
+
+			for (auto connection : top.connections)
+			{
+
+			}
+
+		}
+	}
+
+	void 최단경로() 
+	{
+		int V, E;//numofNode, numOfConnections
+		int K;//startPoint
+
+		cin >> V >> E >> K;
+
+		nodes.resize(V);
+
+		while (E--)
+		{
+			int from, to, cost;
+
+			cin >> from >> to >> cost;
+
+			from--;
+			to--;
+
+			nodes[from].connections.push_back(make_pair(&nodes[to], cost));
+		}
+	}
+}
+
