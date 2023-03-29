@@ -3392,46 +3392,58 @@ namespace House
 INF
 
 2 02
+2 23
+
+4 41
+5 47
 */
 
 namespace Route
 {
-	class Node
+	class Connection
 	{
 	public:
-
-		int cost = 0;
-
-		vector<pair<Node*, int>> connections;
+		int index;
+		int cost;
 	};
+
+	vector<int> visited;
+	vector<vector<Connection>> connections;
 
 	class Comp
 	{
 	public:
-		bool operator()(const Node& Left, const Node& Right)
+		bool operator()(const Connection& Left, const Connection& Right)
 		{
-
-			return Left.cost < Right.cost;
+			return Left.cost > Right.cost;
 		}
 	};
 
-	vector<Node> nodes;
-
-	void FindRoute(int index)
+	void FindRoute(int from)
 	{
-		priority_queue<Node, vector<Node>, Comp> q;
+		priority_queue<Connection, vector<Connection>, Comp> q;
 
-		q.push(nodes[index]);
+		q.push(Connection({ from, 0 }));
 
-		while (q.empty())
+
+
+		while (!q.empty())
 		{
-			Node top = q.top();
+			Connection t = q.top();
+			q.pop();
 
-			for (auto connection : top.connections)
+			vector<Connection>& cs = connections[t.index];
+
+			if (visited[t.index] != -1) continue;
+			visited[t.index] = t.cost;
+
+			for (auto to : cs)
 			{
+				if (visited[to.index] != -1) continue;
 
+
+				q.push(Connection({ to.index , visited[t.index] + to.cost }));
 			}
-
 		}
 	}
 
@@ -3442,7 +3454,9 @@ namespace Route
 
 		cin >> V >> E >> K;
 
-		nodes.resize(V);
+
+		connections.resize(V);
+		visited.resize(V, -1);
 
 		while (E--)
 		{
@@ -3453,7 +3467,20 @@ namespace Route
 			from--;
 			to--;
 
-			nodes[from].connections.push_back(make_pair(&nodes[to], cost));
+
+			connections[from].push_back(Connection({to, cost}));
+		}
+
+		K--;
+
+		FindRoute(K);
+
+		for (int i = 0; i < V; i++)
+		{
+			if (visited[i] == -1)
+				cout << "INF" << "\n";
+			else
+				cout << visited[i] << "\n";
 		}
 	}
 }
