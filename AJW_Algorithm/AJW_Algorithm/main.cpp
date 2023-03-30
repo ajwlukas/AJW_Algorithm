@@ -88,6 +88,11 @@ namespace Route
 	void 최단경로();
 
 }
+namespace Route2
+{
+	void 최단경로();
+
+}
 
 
 
@@ -190,7 +195,8 @@ int main()
 		//Quad::쿼드트리();
 		//가장긴바이토닉부분수열();
 		//House::단지번호붙이기();
-		Route::최단경로();
+		//Route::최단경로();
+		Route2::최단경로();
 
 		cout << "\n\n";
 

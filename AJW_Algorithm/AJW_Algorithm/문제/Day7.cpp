@@ -3346,7 +3346,7 @@ namespace House
 
 
 			int num = 0;
-			 GetConnectedHouses(p.x, p.y, num);
+			GetConnectedHouses(p.x, p.y, num);
 
 			rets.push_back(num);
 		}
@@ -3447,7 +3447,7 @@ namespace Route
 		}
 	}
 
-	void 최단경로() 
+	void 최단경로()
 	{
 		int V, E;//numofNode, numOfConnections
 		int K;//startPoint
@@ -3468,7 +3468,7 @@ namespace Route
 			to--;
 
 
-			connections[from].push_back(Connection({to, cost}));
+			connections[from].push_back(Connection({ to, cost }));
 		}
 
 		K--;
@@ -3481,6 +3481,77 @@ namespace Route
 				cout << "INF" << "\n";
 			else
 				cout << visited[i] << "\n";
+		}
+	}
+}
+
+namespace Route2//한번 더 풀어보기 11 : 00 ~ 11 : 20
+{
+	vector<vector<pair<int, int>>> edges;//edges[src][0] = {dest, cost}
+
+	vector<int> rets;//rets[dest] = wholeCost;
+
+	void Solution(int start)
+	{
+		priority_queue<pair<int, int>, vector<pair<int,int>>, greater<pair<int,int>>> pQ;// wholeCost, dest;
+
+		pQ.push({ 0, start});
+
+		while (!pQ.empty())
+		{
+			int visit = pQ.top().second;
+			int costByFar = pQ.top().first;
+
+			pQ.pop();
+
+			if (rets[visit] != -1) continue;//이미 방문했다면 스킵
+
+			rets[visit] = costByFar;
+
+			for (auto edge : edges[visit])
+			{
+				int dest = edge.first;
+
+				if (rets[dest] != -1) continue;
+
+				int singleCost = edge.second;
+
+				pQ.push({ costByFar + singleCost, dest });
+			}
+		}
+
+	}
+
+	void 최단경로()
+	{
+		int V, E, K;//V(1 ~ 20000), E(1 ~ 300000), K(1 ~ V)
+
+		cin >> V >> E >> K;
+
+		edges.resize(V);
+		rets.resize(V, -1);
+
+		while (E--)
+		{
+			int u, v, w;//(u != v, w <= 10);
+
+			cin >> u >> v >> w;
+
+			u--;
+			v--;
+
+			edges[u].push_back(make_pair(v, w));
+		}
+
+		K--;
+		Solution(K);
+
+		for (int i : rets)
+		{
+			if (i == -1)
+				cout << "INF" << "\n";
+			else
+				cout << i << "\n";
 		}
 	}
 }
